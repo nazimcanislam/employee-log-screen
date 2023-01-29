@@ -40,7 +40,7 @@ Sanal ortamı çalıştıralım (Windows)
 Sanal ortamı çalıştıralım (Unix)
 
 ```bash
-./venv/bin/activate
+source ./venv/bin/activate
 ```
 
 Gerekli kütüphaneleri kuralım...

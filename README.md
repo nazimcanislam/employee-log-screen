@@ -40,7 +40,7 @@ Let's run the virtual environment (Windows)
 Let's run the virtual environment (Unix)
 
 ```bash
-./venv/bin/activate
+source ./venv/bin/activate
 ```
 
 Let's install the necessary libraries...
