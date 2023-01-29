@@ -1,0 +1,48 @@
+{% extends 'log_screen/base.html' %}
+{% load static %}
+
+{% block title %}Personel Kayıt Ekranı | Giriş{% endblock title %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col col-12 col-lg-5">
+                <h1 class="display-3 text-center">Giriş</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-12 col-lg-5">
+                <form class="needs-validation" method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="username-input" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" name="username-input" id="username-input" autocapitalize="off" required>
+
+                        <div class="invalid-feedback">
+                            Lütfen kullanıcı adınızı boş bırakmayınız!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password-input" class="form-label">Parola</label>
+                        <input type="password" class="form-control" name="password-input" id="password-input" required>
+
+                        <div class="invalid-feedback">
+                            Lütfen parolanızı girdiğinizden emin olunuz!
+                        </div>
+                    </div>
+                    <div class="mb-3 form-text">
+                        <a href="{% url 'signup' %}" class="link-primary text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            Hesabınız mı yok?
+                        </a>
+                    </div>
+                    <div class="d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,77 @@
+{% extends 'log_screen/base.html' %}
+
+{% block title %}{{ model_meta.verbose_name }} Kaydı Ekle{% endblock title %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col">
+                <h1 class="h1 text-center">
+                    {% if adding %}
+                        {{ model_meta.verbose_name }} Kaydı Ekle
+                    {% elif editing %}
+                        {{ model_meta.verbose_name }} Düzenle<br>{{ data }}
+                    {% else %}
+
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-12 col-md-8 col-lg-6">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    {% include include_form_name %}
+
+                    <div class="row-gap-2 row-gap-lg-0">
+                        {% if adding %}
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ model_meta.verbose_name_plural }} tablosuna ekle">
+                                <i class="bi bi-plus"></i>
+                                <strong>{{ model_meta.verbose_name }}</strong> Ekle
+                            </button>
+                        {% elif editing %}
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ data }} verisini düzenle">
+                                <i class="bi bi-pencil-square"></i>
+                                <strong>{{ model_meta.verbose_name }}</strong> Düzenle
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-data-modal">
+                                <i class="bi bi-trash"></i>
+                                Sil
+                            </button>
+                        {% endif %}
+                        <a href="/?model_name={{ model_meta.model_name }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Vazgeç ve geri dön">
+                            <i class="bi bi-slash-circle-fill"></i>
+                            Vazgeç
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if editing %}
+        <div class="modal fade" id="delete-data-modal" tabindex="-1" aria-labelledby="delete-data-modal-heading" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="delete-data-modal-heading">Silmek İçin Onay</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <strong>{{ model_meta.verbose_name_plural }}</strong> tablosundan <strong>{{ data }}</strong> verisini silmek istediğinize emin misiniz?<br>Bu işlem <u>geri alınamaz</u>.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            <i class="bi bi-slash-circle-fill"></i>
+                            Hayır, Vazgeçtim
+                        </button>
+                        <a href="{% url 'delete' model_name=model_meta.model_name _id=data.id %}" type="button" class="btn btn-danger">
+                            <i class="bi bi-trash"></i>
+                            Evet, Eminim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

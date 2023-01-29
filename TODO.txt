@@ -1,0 +1,1 @@
+Tablo verilerinin 'Düzenle' butonları düzgün bir arayüz gösteriyor ancak kaydedildiklerinde çalışmıyor. Bunu düzelt :)

@@ -1,0 +1,33 @@
+<!-- Customer name -->
+<div class="mb-3">
+    <label for="customer-name-input" class="form-label">Müşteri Adı</label>
+    <input type="text" class="form-control" name="customer-name-input" id="customer-name-input" autocapitalize="words" minlength="3" aria-describedby="customer-name-help" value="{{ data.customer_name }}" required>
+
+    <div id="customer-name-help" class="form-text">
+        Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
+    </div>
+
+    <div class="invalid-feedback">
+        Lütfen müşteri adını düzgün girdiğinizden emin olunuz!
+    </div>
+</div>
+
+<!-- Customer lead date -->
+<div class="mb-3">
+    <label for="customer-lead-date-input" class="form-label">Müşteri Ön Tarih</label>
+    <input type="date" class="form-control" name="customer-lead-date-input" id="customer-lead-date-input" aria-describedby="customer-lead-date-help" value="{{ data.customer_lead_date|date:'Y-m-d' }}" required>
+
+    <div id="customer-lead-date-help" class="form-text">
+        Müşterinin ön kayıt tarihini giriniz.
+    </div>
+
+    <div class="invalid-feedback">
+        Lütfen müşteri ön tarihi eksiksiz giriniz!
+    </div>
+</div>
+
+<!-- Customer current -->
+<div class="mb-3 form-check">
+    <label for="customer-current-input" class="form-check-label">Mevcut Müşteri</label>
+    <input type="checkbox" class="form-check-input" name="customer-current-input" id="customer-current-input" {% if data.customer_current %}checked aria-checked="true"{% endif %}>
+</div>

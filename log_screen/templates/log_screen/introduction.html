@@ -1,0 +1,52 @@
+{% extends 'log_screen/base.html' %}
+{% load static %}
+{% load log_screen_extras %}
+
+{% block title %}{% get_app_label %} | Personellerinizi ve Projelerini Yönetin{% endblock title %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row align-items-center row-gap-4 mb-5">
+            <div class="col col-12 col-lg-6 text-center text-lg-start">
+                <img src="{% static 'favicon_io/android-chrome-512x512.png' %}" alt="Logo" style="max-width: 64px; width: 100%;">
+                <h1 class="display-1">Personel Kayıt Ekranı</h1>
+                <p class="lead">Personellerinizi ve Projelerini Yönetin</p>
+                <a href="{% url 'login' %}" class="btn btn-primary">Giriş Yap</a>
+                <a href="{% url 'signup' %}" class="btn btn-outline-primary">Kayıt Ol</a>
+            </div>
+            <div class="col col-12 col-lg-6 p-0 px-2 p-lg-5">
+                <img src="{% static 'svg/undraw_organize_resume_re_k45b.svg' %}" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="row align-items-center row-gap-4 mb-5">
+            <div class="col col-12 col-lg-6 text-center text-lg-start order-lg-2">
+                <h1 class="display-1">Modern ve Mobil Uyumlu</h1>
+                <p class="lead">Personellerinizi ve projelerini yönetirken telefon ve tabletinizden bağlanın! Tıpkı bir mobil uygulama gibi indirme seçeğinden yararlanın.</p>
+            </div>
+            <div class="col col-12 col-lg-6 order-lg-1 p-0 px-2 p-lg-5">
+                <img src="{% static 'svg/undraw_modern_design_re_dlp8.svg' %}" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="row align-items-center row-gap-4 mb-5">
+            <div class="col col-12 col-lg-6 text-center text-lg-start">
+                <h1 class="display-1">Karanlık Tema</h1>
+                <p class="lead">Yeni <a class="link-primary text-decoration-none" href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank">bootstrap@5.3.0-alpha1</a> sayesinde artık cihazınızın gece modu ile karanlık temayı kullanabilirsiniz.</p>
+            </div>
+            <div class="col col-12 col-lg-6 p-0 px-2 p-lg-5">
+                <img src="{% static 'svg/undraw_dark_mode_2xam.svg' %}" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="row align-items-center row-gap-4 mb-5">
+            <div class="col col-12 col-lg-6 text-center text-lg-start order-lg-2">
+                <h1 class="display-1">Bulut Tabanlı</h1>
+                <p class="lead">Sınırsız personel ve projelerini bulutta güvenle saklayın.</p>
+            </div>
+            <div class="col col-12 col-lg-6 order-lg-1 p-0 px-2 p-lg-5">
+                <img src="{% static 'svg/undraw_cloud_files_wmo8.svg' %}" class="img-fluid">
+            </div>
+        </div>
+    </div>
+{% endblock content %}

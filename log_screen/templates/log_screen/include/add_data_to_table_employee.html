@@ -1,0 +1,47 @@
+<div class="mb-3">
+    <label for="employee-first-name-input" class="form-label">Adı</label>
+    <input type="text" class="form-control" name="employee-first-name-input" id="employee-first-name-input" autocapitalize="words" minlength="3" value="{{ data.employee_first_name }}" required>
+
+    <div id="employee-first-name-input" class="form-text">
+        Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="employee-last-name-input" class="form-label">Soyadı</label>
+    <input type="text" class="form-control" name="employee-last-name-input" id="employee-first-name-input" autocapitalize="words" minlength="3" value="{{ data.employee_last_name }}" required>
+
+    <div id="employee-last-name-input" class="form-text">
+        Lütfen en az 3 karakter uzunluğunda bir soyad giriniz.
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="employee-birthdate-input" class="form-label">Doğum Tarihi</label>
+    <input type="date" class="form-control" name="employee-birthdate-input" id="employee-birthdate-input" value="{{ data.employee_birthdate|date:'Y-m-d' }}" required>
+</div>
+
+<div class="mb-3">
+    <label for="employee-start-input" class="form-label">Başlama Tarihi</label>
+    <input type="date" class="form-control" name="employee-start-input" id="employee-resignation-input" value="{{ data.employee_start_date|date:'Y-m-d' }}" required>
+</div>
+
+<div class="mb-3">
+    <label for="employee-resignation-input" class="form-label">İstifa Tarihi</label>
+    <input type="date" class="form-control" name="employee-resignation-input" id="employee-resignation-input" value="{{ data.employee_resignation_date|date:'Y-m-d' }}">
+</div>
+
+<div class="mb-3">
+    <label for="employee-current-project-input" class="form-label">Mevcut Proje</label>
+    <select class="form-select" name="employee-current-project-input" aria-label="Proje Seçin" id="employee-current-project-input">
+        <option>------</option>
+        {% for project in projects %}
+            <option value="{{ project_meta.model_name }}-{{ project.id }}"{% if data.employee_current_project.id == project.id %} selected{% endif %}>{{ project }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="mb-3 form-check">
+    <label class="form-check-label" for="employee-is-active-input">Aktif</label>
+    <input class="form-check-input" type="checkbox" name="employee-is-active-input" id="employee-is-active-input"{% if data.employee_is_active %} checked aria-checked="true" {% endif %}>
+</div>

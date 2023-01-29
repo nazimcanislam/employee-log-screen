@@ -1,0 +1,51 @@
+{% load log_screen_extras %}
+
+<div class="mb-3">
+    <label for="project-customer-input" class="form-label">Müşteri</label>
+    <select class="form-select" name="project-customer-input" aria-label="Müşteri Seçin" id="project-customer-input" required>
+        <option value="">------</option>
+        {% for customer in customers %}
+            <option value="{{ customer_meta.model_name }}-{{ customer.id }}"{% if data.project_customer.id == customer.id %}selected{% endif %}>{{ customer }}</option>
+        {% endfor %}
+    </select>
+
+    <div class="invalid-feedback">
+        Lütfen proje için bir müşteri seçtiğinizden emin olunuz!
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="project-start-date-input" class="form-label">Başlangıç Tarihi</label>
+    <input type="date" class="form-control" name="project-start-date-input" id="project-start-date-input" value="{{ data.project_start_date|date:'Y-m-d' }}" required>
+
+    <div class="invalid-feedback">
+        Lütfen projenin başlangıç tarihini seçiniz!
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="project-finish-date-input" class="form-label">Bitiş Tarihi</label>
+    <input type="date" class="form-control" name="project-finish-date-input" id="project-finish-date-input" value="{{ data.project_finish_date|date:'Y-m-d' }}" required>
+
+    <div class="invalid-feedback">
+        Lütfen projenin bitiş tarihini seçiniz!
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="project-business-unit-input" class="form-label">Proje Ünitesi</label>
+    <input type="text" class="form-control" name="project-business-unit-input" id="project-business-unit-input" value="{{ data.project_business_unit }}" required>
+
+    <div class="invalid-feedback">
+        Lütfen proje ünitesini giriniz!
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="project-type-input" class="form-label">Proje Tipi</label>
+    <input type="text" class="form-control" name="project-type-input" id="project-type-input" value="{{ data.project_type }}" required>
+
+    <div class="invalid-feedback">
+        Lütfen proje tipini giriniz!
+    </div>
+</div>

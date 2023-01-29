@@ -1,0 +1,252 @@
+{% load static %}
+{% load pwa %}
+{% load log_screen_extras %}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Nazımcan İslam">
+    <meta name="description" content="Personellerinizi ve projelerini yönetin.">
+    <meta name="keywords" content="personel, personel kayıt, personel projeleri, müşteri kayıt">
+
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0d6efd">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d6efd">
+
+    <!-- Title of page -->
+    <title translate="no">{% block title %}{% get_app_label %}{% endblock title %}</title>
+
+    <!-- Import Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- Import Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_io/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{% static 'favicon_io/android-chrome-512x512.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'favicon_io/android-chrome-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon_io/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_io/favicon-16x16.png' %}">
+    <link rel="icon" type="image/ico" href="{% static 'favicon_io/favicon.ico' %}">
+
+    {% progressive_web_app_meta %}
+
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        main {
+            min-height: 100vh;
+        }
+    </style>
+
+    <script>
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.querySelector('html').dataset.bsTheme = "dark";
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({ matches }) => {
+            if (matches) {
+                document.querySelector('html').dataset.bsTheme = "dark"
+            } else {
+                document.querySelector('html').dataset.bsTheme = "light"
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <noscript class="alert alert-danger w-100 d-block text-center m-0 rounded-0">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>Tarayıcınızın site ayarlarından <u>JavaScript</u> kapalı! Lütfen bu sayfayı doğru görüntüleyebilmek için bu ayarı açınız. Eğer açtıysanız sayfayı <u>yenileyiniz</u>.</strong>
+    </noscript>
+
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+                <!-- Navbar brand -->
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <img src="{% static 'favicon_io/apple-touch-icon.png' %}" alt="Logo" width="28" class="d-inline-block align-text-top"> <span class="d-none d-sm-inline-block" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></span>
+                </a>
+    
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a href="{% url 'index' %}" class="nav-link {% if request.path == '/' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                <i class="bi bi-house"></i>
+                                Anasayfa
+                            </a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link disabled {% if request.path == '/profile' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-person"></i>
+                                    Profil Düzenle
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link disabled {% if request.path == '/settings' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-gear"></i>
+                                    Ayarlar
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{% url 'login' %}" class="nav-link {% if request.path == '/login' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    Giriş Yap
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'signup' %}" class="nav-link {% if request.path == '/signup' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    Kayıt Ol
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+    
+                    {% if request.user.is_authenticated %}
+                        <div>
+                            {% if request.user.is_superuser %}
+                                <a href="/admin/" class="btn btn-outline-light">
+                                    <i class="bi bi-person-lock"></i>
+                                    Admin Paneli
+                                </a>
+                            {% endif %}
+                            <a data-bs-toggle="modal" data-bs-target="#logout-modal" class="btn btn-outline-light">
+                                <i class="bi bi-box-arrow-left"></i>
+                                Çıkış Yap
+                            </a>
+                        </div>
+                    {% endif %}
+    
+                    <div class="d-block d-sm-none">
+                        <hr>
+                        <h6 class="m-0" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></h6>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% if messages|length > 0 %}
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col">
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message|safe }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock content %}
+    </main>
+
+    {% if request.user.is_authenticated %}
+        <div class="modal fade" id="logout-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Çıkış Onay</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Hesabınızdan çıkış yapmak istediğinize emin misiniz?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeçtim</button>
+                        <a href="{% url 'logout' %}" type="button" class="btn btn-primary">Evet, Eminim</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <footer class="container-fluid bg-body-tertiary border-top pt-5 px-0">
+        <div class="container">
+            <div class="row row-gap-1 justify-content-between justify-content-lg-center mb-5">
+                <div class="col col-12 col-sm-6 col-md-5 col-lg-4">
+                    <img src="{% static 'favicon_io/apple-touch-icon.png' %}" alt="Logo" width="28" class="d-inline-block mb-1">
+                    <h6 class="m-0" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></h6>
+                    <p class="text-muted m-0">Personellerinizi ve projelerini yönetin.</p>
+                </div>
+                <div class="col d-block d-sm-none">
+                    <hr>
+                </div>
+                <div class="col col-12 col-sm-6 col-md-5 col-lg-4" translate="no">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="mailto:nazimcan.islam@analythinx.com" class="text-decoration-none link-primary">
+                                <i class="bi bi-envelope-at-fill"></i>
+                                nazimcan.islam@analythinx.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/nazimcanislam/" class="text-decoration-none link-primary" target="_blank">
+                                <i class="bi bi-linkedin"></i>
+                                Nazımcan İslam
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/nazimcanislam/employee-log-screen" class="text-decoration-none link-primary" target="_blank">
+                                <i class="bi bi-github"></i>
+                                GitHub Kaynak Kodu
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid p-0 py-2 text-center border-top">
+            <div class="row m-0">
+                <div class="col">
+                    <span>{% get_app_label %} &bull; 2023</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Import Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+            }, false)
+        })
+        })()
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+</body>
+
+</html>

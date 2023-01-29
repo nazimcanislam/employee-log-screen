@@ -1,0 +1,98 @@
+{% extends 'log_screen/base.html' %}
+{% load static %}
+
+{% block title %}Personel Kayıt Ekranı | Kayıt{% endblock title %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col col-12 col-lg-5">
+                <h1 class="display-3 text-center">Kayıt</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-12 col-lg-5">
+                <form class="needs-validation" method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Full name -->
+                    <div class="mb-3">
+                        <label for="fullname-input" class="form-label">Ad Soyad</label>
+                        <input type="text" class="form-control" name="fullname-input" id="fullname-input" minlength="3" aria-describedby="fullname-input" autocapitalize="words" required>
+
+                        <div id="fullname-help" class="form-text">
+                            Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
+                        </div>
+
+                        <div class="invalid-feedback">
+                            Lütfen adınızı boş bırakmayınız!
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="username-input" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" name="username-input" id="username-input" minlength="5" aria-describedby="username-help" autocapitalize="off" required>
+
+                        <div id="username-help" class="form-text">
+                            Lütfen en az 5 karakter uzunluğunda bir kullanıcı adı giriniz.
+                        </div>
+
+                        <div class="invalid-feedback">
+                            Lütfen kullanıcı adınızı boş bırakmayınız!
+                        </div>
+                    </div>
+
+                    <!-- E-Mail -->
+                    <div class="mb-3">
+                        <label for="email-input" class="form-label">E-Posta Adresi</label>
+                        <input type="email" class="form-control" name="email-input" id="email-input" required>
+
+                        <div class="invalid-feedback">
+                            Lütfen e-posta adresinizi eksiksiz giriniz!
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password-input" class="form-label">Parola</label>
+                        <input type="password" class="form-control" name="password-input" id="password-input" aria-describedby="password-help" minlength="8" required>
+
+                        <div id="password-help" class="form-text">
+                            <ul>
+                                <li>En az 8 karakter içermelidir.</li>
+                                <li>En az 1 büyük harf içermelidir.</li>
+                                <li>En az 1 sayı içermelidir.</li>
+                            </ul>
+                        </div>
+
+                        <div class="invalid-feedback">
+                            Lütfen parolanızı girdiğinizden emin olunuz!
+                        </div>
+                    </div>
+
+                    <!-- Password again -->
+                    <div class="mb-3">
+                        <label for="password-again-input" class="form-label">Parola Tekrar</label>
+                        <input type="password" class="form-control" name="password-again-input" id="password-again-input" minlength="8" required>
+
+                        <div class="invalid-feedback">
+                            Lütfen parolanızı girdiğinizden emin olunuz!
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-text">
+                        <a href="{% url 'login' %}" class="link-primary text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            Zaten hesabınız var mı?
+                        </a>
+                    </div>
+                    <div class="d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
