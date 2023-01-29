@@ -1,6 +1,6 @@
-# Employee Log Screen
+# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Employee Log Screen
 
-User interface using Django Admin Panel to add staff and clients and associate projects.
+User interface using Django to add staff and clients and associate projects.
 
 ## Requirements
 

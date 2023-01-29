@@ -1,6 +1,6 @@
-# Personel Kayıt Ekranı
+# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Personel Kayıt Ekranı
 
-Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django Admin Paneli'ni kullanan arayüz.
+Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django kullanan arayüz.
 
 ## Gereksinimler
 
