@@ -68,8 +68,8 @@ class EmployeeWork(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Kullanıcı')
     employeework_employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Personel')
     employeework_current_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Mevcut Proje')
-    employeework_daily_rate = models.FloatField(verbose_name='Günlük Değerlendirme')
-    employeework_monthly_rate = models.FloatField(verbose_name='Aylık Değerlendirme')
+    employeework_daily_rate = models.FloatField(verbose_name='Günlük Ücret')
+    employeework_monthly_rate = models.FloatField(verbose_name='Aylık Ücret')
     employeework_effort = models.FloatField(verbose_name='Çaba')
     employeework_effort_period = models.DateField(verbose_name='Çaba Dönemi')
 
@@ -79,3 +79,8 @@ class EmployeeWork(models.Model):
     class Meta:
         verbose_name = 'Personel İşi'
         verbose_name_plural = 'Personel İşleri'
+
+
+class EmployeeWorkReport:
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Kullanıcı')
+    

@@ -167,15 +167,14 @@ def get_post_data_employee(request, model_name):
         employee_resignation_date = None
     
     employee_current_project = request.POST.get('employee-current-project-input')
-    if not employee_current_project:
-        messages.add_message(request, messages.ERROR, 'Lütfen personel için bir proje seçtiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    
-    try:
-        employee_current_project = Project.objects.get(id=employee_current_project.split('-')[-1])
-    except Project.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Seçili proje verisi bulunamadı!')
-        return redirect('add_data', model_name=model_name)
+    if employee_current_project:
+        try:
+            employee_current_project = Project.objects.get(id=employee_current_project.split('-')[-1])
+        except Project.DoesNotExist:
+            messages.add_message(request, messages.ERROR, 'Seçili proje verisi bulunamadı!')
+            return redirect('add_data', model_name=model_name)
+        except ValueError:
+            employee_current_project = None
 
     employee_is_active = bool(request.POST.get('employee-is-active-input'))
 
@@ -204,31 +203,34 @@ def get_post_data_employeework(request, model_name):
         return redirect('add_data', model_name=model_name)
     
     employeework_daily_rate = request.POST.get('employeework-daily-rate-input')
-    if not employeework_daily_rate.isnumeric():
-        messages.add_message(request, messages.ERROR, 'Lütfen günlük değerlendirme için bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    elif not (0 <= float(employeework_daily_rate) <= 100):
-        messages.add_message(request, messages.ERROR, 'Lütfen günlük değerlendirme için 0 ile 100 arasında bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    employeework_daily_rate = float(employeework_daily_rate)
+    if employeework_daily_rate:
+        if not employeework_daily_rate.isnumeric():
+            messages.add_message(request, messages.ERROR, 'Lütfen günlük ücret için bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        elif int(employeework_daily_rate) < 0:
+            messages.add_message(request, messages.ERROR, 'Lütfen günlük ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        employeework_daily_rate = int(employeework_daily_rate)
 
     employeework_monthly_rate = request.POST.get('employeework-monthly-rate-input')
-    if not employeework_monthly_rate.isnumeric():
-        messages.add_message(request, messages.ERROR, 'Lütfen aylık değerlendirme için bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    elif not (0 <= float(employeework_monthly_rate) <= 100):
-        messages.add_message(request, messages.ERROR, 'Lütfen aylık değerlendirme için 0 ile 100 arasında bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    employeework_monthly_rate = float(employeework_monthly_rate)
+    if employeework_monthly_rate:
+        if not employeework_monthly_rate.isnumeric():
+            messages.add_message(request, messages.ERROR, 'Lütfen aylık ücret için bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        elif int(employeework_monthly_rate) < 0:
+            messages.add_message(request, messages.ERROR, 'Lütfen aylık ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        employeework_monthly_rate = int(employeework_monthly_rate)
 
     employeework_effort = request.POST.get('employeework-effort-input')
-    if not employeework_effort.isnumeric():
-        messages.add_message(request, messages.ERROR, 'Lütfen çaba değerlendirme için bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    elif not (0 <= float(employeework_effort) <= 100):
-        messages.add_message(request, messages.ERROR, 'Lütfen çaba değerlendirme için 0 ile 100 arasında bir sayı girdiğinizden emin olunuz!')
-        return redirect('add_data', model_name=model_name)
-    employeework_effort = float(employeework_effort)
+    if employeework_effort:
+        if not employeework_effort.isnumeric():
+            messages.add_message(request, messages.ERROR, 'Lütfen çaba ücret için bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        elif int(employeework_effort) < 0:
+            messages.add_message(request, messages.ERROR, 'Lütfen çaba ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
+            return redirect('add_data', model_name=model_name)
+        employeework_effort = int(employeework_effort)
 
     employeework_effort_period = request.POST.get('employeework-effort-period-input')
     if employeework_effort_period == '':
@@ -237,7 +239,7 @@ def get_post_data_employeework(request, model_name):
     else:
         employeework_effort_period = employeework_effort_period.strip()
     try:
-        employeework_effort_period = datetime.strptime(employeework_effort_period, '%Y-%m-%d')
+        employeework_effort_period = datetime.strptime(employeework_effort_period, '%Y-%m')
     except ValueError:
         messages.add_message(request, messages.ERROR, 'Lütfen proje işinin çaba dönemini doğru girdiğinizden emin olunuz! giriniz!')
         return redirect('add_data', model_name=model_name)
