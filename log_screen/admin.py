@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.conf import settings
 
 from .models import Customer, Project, Employee, EmployeeWork
 
@@ -24,5 +25,5 @@ admin.site.register(Project, ProjectAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(EmployeeWork, EmployeeWorkAdmin)
 
-admin.site.site_header = 'Personel Kayıt Ekranı Kontrol Paneli'
-admin.site.site_title = 'Personel Kayıt Ekranı Kontrol Paneli'
+admin.site.site_header = f'{settings.APP_LABEL} Kontrol Paneli'
+admin.site.site_title = f'{settings.APP_LABEL} Kontrol Paneli'

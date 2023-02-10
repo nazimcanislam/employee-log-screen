@@ -4,6 +4,9 @@ import os
 import sys
 
 
+sys.dont_write_bytecode = True
+
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'employee_log_screen.settings')

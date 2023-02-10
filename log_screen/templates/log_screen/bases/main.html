@@ -6,6 +6,7 @@
 <html lang="tr">
 
 <head>
+    <!-- Define page meta tags -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <meta name="description" content="Personellerinizi ve projelerini yönetin.">
     <meta name="keywords" content="personel, personel kayıt, personel projeleri, müşteri kayıt">
 
+    <!-- Set the page theme color for app theme color -->
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0d6efd">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d6efd">
 
@@ -24,7 +26,7 @@
 
     <!-- Import Bootstrap Icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-
+ 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_io/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="512x512" href="{% static 'favicon_io/android-chrome-512x512.png' %}">
@@ -33,34 +35,40 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_io/favicon-16x16.png' %}">
     <link rel="icon" type="image/ico" href="{% static 'favicon_io/favicon.ico' %}">
 
+    {# Put Django PWA head tags here #}
     {% progressive_web_app_meta %}
 
     <style>
+        /* Enabled the browser light and dark themes. */
         :root {
             color-scheme: light dark;
         }
 
+        /* Define the main tags height to viewport height */
         main {
-            min-height: 100vh;
+            min-height: calc(100vh - 56px);
         }
     </style>
 
     <script>
+        // Check system theme. If the theme is dark add a class to the root tag to make the page dark with Bootstrap.
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.querySelector('html').dataset.bsTheme = "dark";
         }
 
+        // Add a listener for the system theme and sync the system theme with the Bootstrap theme.
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({ matches }) => {
             if (matches) {
-                document.querySelector('html').dataset.bsTheme = "dark"
+                document.querySelector('html').dataset.bsTheme = "dark";
             } else {
-                document.querySelector('html').dataset.bsTheme = "light"
+                document.querySelector('html').dataset.bsTheme = "light";
             }
         });
     </script>
 </head>
 
-<body>
+<body class="overflow-x-hidden overflow-y-scroll">
+    <!-- Show a message to user open to page scripts -->
     <noscript class="alert alert-danger w-100 d-block text-center m-0 rounded-0">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <strong>Tarayıcınızın site ayarlarından <u>JavaScript</u> kapalı! Lütfen bu sayfayı doğru görüntüleyebilmek için bu ayarı açınız. Eğer açtıysanız sayfayı <u>yenileyiniz</u>.</strong>
@@ -74,60 +82,68 @@
                     <img src="{% static 'favicon_io/apple-touch-icon.png' %}" alt="Logo" width="28" class="d-inline-block align-text-top"> <span class="d-none d-sm-inline-block" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></span>
                 </a>
     
+                <!-- Navbar toggler button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
     
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- Home page link -->
                         <li class="nav-item">
-                            <a href="{% url 'index' %}" class="nav-link {% if request.path == '/' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                            <a href="{% url 'index' %}" class="nav-link {% if request.path == '/' %}active{% endif %} text-capitalize"{% if request.path == '/' %} aria-current="true"{% endif %}>
                                 <i class="bi bi-house"></i>
-                                Anasayfa
+                                <span>Anasayfa</span>
                             </a>
                         </li>
+
+                        {# Show edit profile and settings links when user is authenticated #}
+                        {# If there is not user, then show login and signup links #}
                         {% if request.user.is_authenticated %}
                             <li class="nav-item">
-                                <a href="#" class="nav-link disabled {% if request.path == '/profile' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                <a href="#" class="nav-link disabled {% if request.path == '/profile/' %}active{% endif %} text-capitalize"{% if request.path == '/' %} aria-current="true"{% endif %}>
                                     <i class="bi bi-person"></i>
-                                    Profil Düzenle
+                                    <span>Profil Düzenle</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link disabled {% if request.path == '/settings' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                <a href="#" class="nav-link disabled {% if request.path == '/settings/' %}active{% endif %} text-capitalize"{% if request.path == '/' %} aria-current="true"{% endif %}>
                                     <i class="bi bi-gear"></i>
-                                    Ayarlar
+                                    <span>Ayarlar</span>
                                 </a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="{% url 'login' %}" class="nav-link {% if request.path == '/login' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
-                                    Giriş Yap
+                                <a href="{% url 'login' %}" class="nav-link {% if request.path == '/login/' %}active{% endif %} text-capitalize"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    <span>Giriş Yap</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'signup' %}" class="nav-link {% if request.path == '/signup' %}active{% endif %}"{% if request.path == '/' %} aria-current="true"{% endif %}>
-                                    Kayıt Ol
+                                <a href="{% url 'signup' %}" class="nav-link {% if request.path == '/signup/' %}active{% endif %} text-capitalize"{% if request.path == '/' %} aria-current="true"{% endif %}>
+                                    <span>Kayıt Ol</span>
                                 </a>
                             </li>
                         {% endif %}
                     </ul>
     
+                    {# Show user control buttons when user is authenticated #}
                     {% if request.user.is_authenticated %}
-                        <div>
+                        <div class="d-flex gap-1">
+                            {# Show admin panel link when authenticated user is super user #}
                             {% if request.user.is_superuser %}
-                                <a href="/admin/" class="btn btn-outline-light">
+                                <a href="/admin/" class="btn btn-outline-light text-capitalize">
                                     <i class="bi bi-person-lock"></i>
-                                    Admin Paneli
+                                    <span>Admin Paneli</span>
                                 </a>
                             {% endif %}
-                            <a data-bs-toggle="modal" data-bs-target="#logout-modal" class="btn btn-outline-light">
+                            <a data-bs-toggle="modal" data-bs-target="#logout-modal" class="btn btn-outline-light text-capitalize">
                                 <i class="bi bi-box-arrow-left"></i>
-                                Çıkış Yap
+                                <span>Çıkış Yap</span>
                             </a>
                         </div>
                     {% endif %}
     
+                    <!-- Application label for mobile devices -->
                     <div class="d-block d-sm-none">
                         <hr>
                         <h6 class="m-0" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></h6>
@@ -137,36 +153,46 @@
         </nav>
     </header>
 
+    <!-- Page content tag -->
     <main>
-        {% if messages|length > 0 %}
-            <div class="container mt-3">
-                <div class="row">
-                    <div class="col">
+        <!-- Messages container -->
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                    {# If there are messages, print them with a loop and Bootstrap classes. #}
+                    {% if messages|length > 0 %}
                         {% for message in messages %}
                             <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
                                 {{ message|safe }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         {% endfor %}
-                    </div>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
+        </div>
 
+        {# Dynamically determine the content part of the pages. #}
         {% block content %}{% endblock content %}
     </main>
 
+    {# Create a exit accept modal when user is authenticated #}
     {% if request.user.is_authenticated %}
         <div class="modal fade" id="logout-modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <!-- Modal heading and close button -->
                     <div class="modal-header">
                         <h5 class="modal-title">Çıkış Onay</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
+                    <!-- Modal message -->
                     <div class="modal-body">
                         <p>Hesabınızdan çıkış yapmak istediğinize emin misiniz?</p>
                     </div>
+
+                    <!-- Modal controls -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeçtim</button>
                         <a href="{% url 'logout' %}" type="button" class="btn btn-primary">Evet, Eminim</a>
@@ -176,45 +202,65 @@
         </div>
     {% endif %}
 
+    <!-- Page footer -->
     <footer class="container-fluid bg-body-tertiary border-top pt-5 px-0">
         <div class="container">
             <div class="row row-gap-1 justify-content-between justify-content-lg-center mb-5">
-                <div class="col col-12 col-sm-6 col-md-5 col-lg-4">
-                    <img src="{% static 'favicon_io/apple-touch-icon.png' %}" alt="Logo" width="28" class="d-inline-block mb-1">
+                <!-- App label and description -->
+                <div class="col col-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href="{% url 'index' %}" class="text-decoration-none d-inline-block mb-1">
+                        <img src="{% static 'favicon_io/apple-touch-icon.png' %}" alt="Logo" width="28" class="d-inline-block">
+                    </a>
                     <h6 class="m-0" translate="no">{% get_app_label %} <small class="text-muted">v{% get_app_version %}</small></h6>
                     <p class="text-muted m-0">Personellerinizi ve projelerini yönetin.</p>
+
+                    <a href="https://www.analythinx.com/" class="text-decoration-none d-inline-block mt-1" target="_blank">
+                        <img class="d-inline-block" style="max-width: 150px; height: auto; filter: drop-shadow(0 0 0.1rem #ffffff);" src="{% static 'images/logo400x200.png' %}">
+                    </a>
                 </div>
+
+                <!-- Row division horizontal rule -->
                 <div class="col d-block d-sm-none">
                     <hr>
                 </div>
-                <div class="col col-12 col-sm-6 col-md-5 col-lg-4" translate="no">
+
+                <!-- Footer links -->
+                <div class="col col-12 col-sm-6 col-md-4 col-lg-4" translate="no">
                     <ul class="list-unstyled">
                         <li>
-                            <a href="mailto:nazimcan.islam@analythinx.com" class="text-decoration-none link-primary">
+                            <a href="mailto:nazimcan.islam@analythinx.com?subject={% get_app_label %} Hakkında" class="text-decoration-none link-primary">
                                 <i class="bi bi-envelope-at-fill"></i>
-                                nazimcan.islam@analythinx.com
+                                <span>E-Posta Gönder</span>
                             </a>
                         </li>
                         <li>
                             <a href="https://www.linkedin.com/in/nazimcanislam/" class="text-decoration-none link-primary" target="_blank">
                                 <i class="bi bi-linkedin"></i>
-                                Nazımcan İslam
+                                <span>Geliştirici</span>
                             </a>
                         </li>
                         <li>
                             <a href="https://github.com/nazimcanislam/employee-log-screen" class="text-decoration-none link-primary" target="_blank">
                                 <i class="bi bi-github"></i>
-                                GitHub Kaynak Kodu
+                                <span>GitHub Kaynak Kodu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:nazimcan.islam@analythinx.com?subject={% get_app_label %} Hata Bildirim" class="text-decoration-none link-primary">
+                                <i class="bi bi-bug-fill"></i>
+                                <span>Hata Bildir</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        <!-- Footer copyright -->
         <div class="container-fluid p-0 py-2 text-center border-top">
             <div class="row m-0">
                 <div class="col">
-                    <span>{% get_app_label %} &bull; 2023</span>
+                    <span><strong>Analythinx</strong> &bull; {% get_app_label %} &bull; 2023</span>
                 </div>
             </div>
         </div>
@@ -246,6 +292,12 @@
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+        // Making currency
+        const moneyNumbers = document.querySelectorAll('.money-number');
+        moneyNumbers.forEach(moneyNumber => {
+            moneyNumber.innerText = Number(moneyNumber.innerHTML.replace(',', '.')).toLocaleString('tr-TR');
+        });
     </script>
 </body>
 

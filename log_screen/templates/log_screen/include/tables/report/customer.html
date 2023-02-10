@@ -1,0 +1,37 @@
+<thead>
+    <tr>
+        <th scope="col">Müşteri Ön Tarih</th>
+        <th scope="col">Müşteri</th>
+        <th scope="col">
+            Toplam
+            <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-title="(Günlük * Efor) + (Aylık * Efor) = Toplam"></i>
+        </th>
+    </tr>
+</thead>
+<tbody class="table-group-divider">
+    {% for customer in customers %}
+        <tr>
+            <td>
+                <time>{{ customer.customer_lead_date|date:"F Y" }}</time>
+            </td>
+            <td>
+                {% if customer.customer_current %}
+                    <i class="bi bi-check-square-fill text-success" data-bs-toggle="tooltip" data-bs-title="Mevcut Müşteri"></i>
+                {% else %}
+                    <i class="bi bi-x-square-fill text-danger" data-bs-toggle="tooltip" data-bs-title="Mevcut Olmayan Müşteri"></i>
+                {% endif %}
+                <a href="{% url 'edit' model_name=model_name _id=customer.id %}" class="link-primary text-decoration-none" translate="no">{{ customer }}</a>
+            </td>
+            <td>
+                <span class="money-number">{{ customer.total_effort }}</span> ₺
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="100%">
+            <span>Toplamda <strong>{{ customers|length }}</strong> adet <strong>{{ report_name }}</strong> var.</span>
+        </td>
+    </tr>
+</tfoot>

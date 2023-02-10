@@ -1,0 +1,57 @@
+<div class="mb-3">
+    <label for="employeework-employee-input" class="form-label">Personel</label>
+    <select class="form-select" name="employeework-employee-input" aria-label="Personel Seçin" id="employeework-employee-input" translate="no" required>
+        <option value="">------</option>
+        {% for employee in employies %}
+            <option value="{{ employee_meta.model_name }}-{{ employee.id }}"{% if employee.id == data.employeework_employee.id %} selected{% endif %}>{{ employee }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="mb-3">
+    <label for="employeework-current-project-input" class="form-label">Mevcut Proje</label>
+    <select class="form-select" name="employeework-current-project-input" aria-label="Mevcut Proje Seçin" id="employeework-current-project-input" translate="no" required>
+        <option value="">------</option>
+        {% for project in projects %}
+            <option value="{{ project_meta.model_name }}-{{ project.id }}"{% if project.id == data.employeework_current_project.id %} selected{% endif %}>{{ project }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="mb-3">
+    <label for="employeework-daily-rate-input" class="form-label">Günlük Ücret</label>
+    <div class="input-group">
+        <span class="input-group-text" data-bs-toggle="tooltip" data-bs-title="Türk Lirası (TRY)">₺</span>
+        <input type="number" class="form-control" name="employeework-daily-rate-input" id="employeework-daily-rate-input" min="0" placeholder="Sayı giriniz" aria-describedby="employeework-daily-rate-help" value="{{ data.employeework_daily_rate|floatformat:'0' }}" step="any">
+    </div>
+
+    <div class="form-text" id="employeework-daily-rate-help">
+        Lütfen 0'dan büyük bir <strong>günlük</strong> ücret giriniz.
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="employeework-monthly-rate-input" class="form-label">Aylık Ücret</label>
+    <div class="input-group">
+        <span class="input-group-text" data-bs-toggle="tooltip" data-bs-title="Türk Lirası (TRY)">₺</span>
+        <input type="number" class="form-control" name="employeework-monthly-rate-input" id="employeework-monthly-rate-input" min="0" placeholder="Sayı giriniz" aria-describedby="employeework-monthly-rate-help" value="{{ data.employeework_monthly_rate|floatformat:'0' }}" step="any">
+    </div>
+    
+    <div class="form-text" id="employeework-monthly-rate-help">
+        Lütfen 0'dan büyük bir <strong>aylık</strong> ücret giriniz.
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="employeework-effort-input" class="form-label">Efor</label>
+    <input type="number" class="form-control" name="employeework-effort-input" id="employeework-effort-input" min="0" placeholder="Sayı giriniz" aria-describedby="employeework-effort-help" value="{{ data.employeework_effort|floatformat:'0' }}">
+
+    <div class="form-text" id="employeework-effort-help">
+        Lütfen 0'dan büyük bir <strong>efor</strong> giriniz.
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="employeework-effort-period-input" class="form-label">Efor Dönemi</label>
+    <input type="month" class="form-control" name="employeework-effort-period-input" id="employeework-effort-period-input" value="{{ data.employeework_effort_period|date:'Y-m' }}" required>
+</div>

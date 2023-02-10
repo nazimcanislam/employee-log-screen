@@ -1,0 +1,39 @@
+<thead>
+    <tr>
+        <th scope="col">Müşteri</th>
+        <th scope="col">Başlangıç Tarihi</th>
+        <th scope="col">Bitiş Tarihi</th>
+        <th scope="col">İş Ünitesi</th>
+        <th scope="col">Proje Tipi</th>
+        <th scope="col">Eylem</th>
+    </tr>
+</thead>
+<tbody class="table-group-divider">
+    {% for project in results %}
+        <tr>
+            <td>
+                <a href="{% url 'edit' model_name='customer' _id=project.project_customer.id %}" class="link-primary text-decoration-none" translate="no">{{ project.project_customer }}</a>
+            </td>
+            <td>
+                <span class="d-none d-md-block">{{ project.project_start_date|date:"d F Y" }}</span>
+                <span class="d-block d-md-none">{{ project.project_start_date|date:"d M Y" }}</span>
+            </td>
+            <td>
+                <span class="d-none d-md-block">{{ project.project_finish_date|date:"d F Y" }}</span>
+                <span class="d-block d-md-none">{{ project.project_finish_date|date:"d M Y" }}</span>
+            </td>
+            <td>
+                {{ project.project_business_unit }}
+            </td>
+            <td>
+                {{ project.project_type }}
+            </td>
+            <td>
+                <a href="{% url 'edit' model_name=table_name _id=project.id %}" class="link-primary text-decoration-none text-nowrap" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Düzenle: <span translate='no'>{{ project }}</span>">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Düzenle</span>
+                </a>
+            </td> 
+        </tr>
+    {% endfor %}
+</tbody>

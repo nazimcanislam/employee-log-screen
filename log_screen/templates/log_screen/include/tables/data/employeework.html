@@ -1,0 +1,53 @@
+<thead>
+    <tr>
+        <th scope="col">Personel</th>
+        <th scope="col">Mevcut Proje</th>
+        <th scope="col">Günlük Ücret</th>
+        <th scope="col">Aylık Ücret</th>
+        <th scope="col">Efor</th>
+        <th scope="col">Efor Dönemi</th>
+        <th scope="col">Eylem</th>
+    </tr>
+</thead>
+<tbody class="table-group-divider">
+    {% for employeework in results %}
+        <tr>
+            <td>
+                {% if employeework.employeework_employee.employee_is_active %}
+                    <i class="bi bi-check-square-fill text-success" data-bs-toggle="tooltip" data-bs-title="Aktif Personel"></i>
+                {% else %}
+                    <i class="bi bi-x-square-fill text-danger" data-bs-toggle="tooltip" data-bs-title="Aktif Olmayan Personel"></i>
+                {% endif %}
+
+                <a href="{% url 'edit' model_name='employee' _id=employeework.employeework_employee.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee }}</a>
+            </td>
+            <td>
+                <a href="{% url 'edit' model_name='project' _id=employeework.employeework_employee.employee_current_project.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee.employee_current_project }}</a>
+            </td>
+            <td>
+                {% if employeework.employeework_daily_rate %}
+                    <span class="money-number">{{ employeework.employeework_daily_rate }}</span> <span data-bs-toggle="tooltip" data-bs-title="Türk Lirası (TRY)">₺</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if employeework.employeework_monthly_rate %}
+                    <span class="money-number">{{ employeework.employeework_monthly_rate }}</span> <span data-bs-toggle="tooltip" data-bs-title="Türk Lirası (TRY)">₺</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if employeework.employeework_effort %}
+                    <time>{{ employeework.readable_effort }}</time>
+                {% endif %}
+            </td>
+            <td>
+                {{ employeework.employeework_effort_period|date:"F Y" }}
+            </td>
+            <td>
+                <a href="{% url 'edit' model_name=table_name _id=employeework.id %}" class="link-primary text-decoration-none text-nowrap" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Düzenle: <span translate='no'>{{ employeework }}</span>">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Düzenle</span>
+                </a>
+            </td> 
+        </tr>
+    {% endfor %}
+</tbody>

@@ -1,11 +1,11 @@
-{% extends 'log_screen/base.html' %}
+{% extends 'log_screen/bases/main.html' %}
 {% load log_screen_extras %}
 
 {% block title %}
     {% get_app_label %}
 
-    {% if model_meta %}
-        | {{ model_meta.verbose_name_plural }}
+    {% if subtitle %}
+        | {{ subtitle }}
     {% endif %}
 {% endblock title %}
 
@@ -13,52 +13,83 @@
     <div class="container-fluid my-5">
         <div class="row mb-3">
             <div class="col">
-                <h2 class="display-6 text-center text-sm-start">{{ greeting_message|safe }}</h2>
+                <h2 class="display-6 text-center text-sm-start text-capitalize">{{ greeting_message|safe }}</h2>
             </div>
         </div>
 
         <div class="row">
             <div class="col col-12 col-md-4 col-lg-3 mb-4 mb-md-0">
                 <div class="container-fluid p-0">
-                    <div class="row">
+                    <div class="row text-capitalize">
                         <div class="col col-12">
-                            {% if models_names %}
-                                <div class="list-group">
-                                    {% for model_name, verbose_name_plural in models_names %}
-                                        {% if request.GET.model_name == model_name %}
-                                            <a href="/" class="list-group-item list-group-item-action{% if request.GET.model_name == model_name %} active{% endif %}" {% if request.GET.model_name == model_name %}aria-current="true"{% endif %}>
-                                                <i class="bi bi-stack me-1"></i>
-                                                {{ verbose_name_plural }}
-                                            </a>
-                                        {% else %}
-                                            <a href="/?model_name={{ model_name }}" class="list-group-item list-group-item-action">
-                                                <i class="bi bi-stack me-1"></i>
-                                                {{ verbose_name_plural }}
-                                            </a>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            <h6 class="h6">Tablolar</h6>
+                            <div class="list-group">
+                                <a href="{% if request.path == '/tables/customer/' %}/{% else %}/tables/customer/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/customer/' %} active{% endif %}"{% if request.path == '/tables/customer/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-person-heart me-1"></i>
+                                    Müşteriler
+                                </a>
+
+                                <a href="{% if request.path == '/tables/project/' %}/{% else %}/tables/project/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/project/' %} active{% endif %}"{% if request.path == '/tables/project/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-clipboard-data-fill me-1"></i>
+                                    Projeler
+                                </a>
+
+                                <a href="{% if request.path == '/tables/employee/' %}/{% else %}/tables/employee/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/employee/' %} active{% endif %}"{% if request.path == '/tables/employee/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-people-fill me-1"></i>
+                                    Personeller
+                                </a>
+
+                                <a href="{% if request.path == '/tables/employeework/' %}/{% else %}/tables/employeework/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/employeework/' %} active{% endif %}"{% if request.path == '/tables/employeework/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-person-vcard-fill me-1"></i>
+                                    Personeller İşleri
+                                </a>
+                            </div>
+
+                            <h6 class="h6 mt-4 d-flex justify-content-between">
+                                <span>Raporlar</span>
+                                <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-title="Personel işlerinin ve müşterilerinin verileri otomatik raporlanır."></i>
+                            </h6>
+                            <div class="list-group">
+                                <a href="{% if request.path == '/reports/employeework/' %}/{% else %}/reports/employeework/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/reports/employeework/' %} active{% endif %}"{% if request.path == '/reports/employeework/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-person-vcard-fill me-1"></i>
+                                    <span>Personeller İşleri Raporları</span>
+                                </a>
+                                <a href="{% if request.path == '/reports/customer/' %}/{% else %}/reports/customer/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/reports/customer/' %} active{% endif %}"{% if request.path == '/reports/customer/' %} aria-current="true"{% endif %}>
+                                    <i class="bi bi-person-heart me-1"></i>
+                                    <span>Müşteriler Raporları</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    {% if request.GET.model_name %}
+                    {% if search_results %}
                         <div class="row mt-3">
                             <div class="col col-12">
-                                <form class="needs-validation" novalidate>
-                                    <div class="input-group" data-bs-toggle="tooltip" data-bs-title="Ben henüz çalışmıyorum 😅">
-                                        <input type="search" class="form-control" name="search-input" list="search-datalist" id="search-input" placeholder="{{ model_meta.verbose_name }} arayın..." required disabled>
-                                        <button type="submit" class="btn btn-outline-primary" disabled>
-                                            <i class="bi bi-search"></i>
-                                            Ara
-                                        </button>
-                                    </div>
-                                    
-                                    {% if results %}
-                                        <datalist id="search-datalist">
-                                            {% for result in results %}
+                                <form class="needs-validation" method="get" novalidate>
+                                    <div class="input-group">
+                                        <input type="search" class="form-control" name="search-input" list="search-datalist" id="search-input" placeholder="{{ table_verbose_name }} arayın..." autocomplete="off" required>
+                                        
+                                        <datalist id="search-datalist" translate="no">
+                                            {% for result in search_results %}
                                                 <option value="{{ result }}"></option>
                                             {% endfor %}
                                         </datalist>
+
+                                        <button type="submit" class="btn btn-outline-primary text-capitalize">
+                                            <i class="bi bi-search"></i>
+                                            <span>Ara</span>
+                                        </button>
+                                    </div>
+
+                                    {% if search %}
+                                        <div class="mt-2">
+                                            <div class="alert alert-primary mb-1 d-flex justify-content-between">
+                                                <span><strong>{{ search }}</strong> için <strong>{{ results|length }}</strong> arama sonucu.</span>
+                                            
+                                                <a href="{% url 'index_show_table' table_name=table_name %}" data-bs-toggle="tooltip" data-bs-title="Sıfırla">
+                                                    <i class="bi bi-arrow-repeat"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </form>
                             </div>
@@ -66,11 +97,128 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col col-12 col-md-8 col-lg-9{% if not request.GET.model_name %} d-flex align-items-center{% endif %}">
-                {% if request.GET.model_name %}
-                    {% include 'log_screen/include/data_table.html' %}
+
+            <div class="col col-12 col-md-8 col-lg-9">
+                {% if table_verbose_name %}
+                    <div class="container-fluid p-0">
+                        <div class="row mb-3 px-1">
+                            <div class="col col-12 col-sm-8 text-center text-sm-start">
+                                <p class="lead m-0">
+                                    <strong>{{ table_verbose_name }}</strong> düzenlemek için, <strong data-bs-toggle="tooltip" data-bs-title="Tablo üzerindeki verileri düzenlemek için en sağdaki tuşa basınız." class="text-nowrap"><i class="bi bi-pencil-square"></i> Düzenle</strong> tuşuna tıklayın.
+                                </p>
+                            </div>
+                            <div class="col col-12 col-sm-4 text-center text-sm-end mt-3 mt-sm-0 d-grid d-sm-block">
+                                <a href="{% url 'add' model_name=table_name %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ table_verbose_name }} ekleme sayfasını aç">
+                                    <i class="bi bi-plus-lg"></i>
+                                    <strong>{{ table_verbose_name }}</strong>
+                                    <span>Ekle</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col overflow-x-auto">
+                                {% if results %}
+                                    <table class="table table-striped table-hover text-nowrap">
+                                        <caption>{{ table_verbose_name_plural }} Tablosu</caption>
+                                        {% include table_include %}
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="100%">Toplamda <strong>{{ results|length }}</strong> adet <strong>{{ table_verbose_name }}</strong> var.</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                {% else %}
+                                    <h4 class="h4 text-center">Vay canına! Hiç <u>{{ table_verbose_name }}</u> yokmuş 😳<br>Yukarıdaki <u>{{ table_verbose_name }} Ekle</u> tuşu ile ekleme yapabilirsiniz!</h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if results %}
+                            <div class="row">
+                                <div class="col col-12r">
+                                    <nav>
+                                        <ul class="pagination" data-bs-toggle="tooltip" data-bs-title="Ben henüz çalışmıyorum 😅" style="width: max-content;">
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">Önceki</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">1</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">2</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">3</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">4</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">5</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a href="#" class="page-link disabled">Sonraki</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% elif report_name %}
+                    <div class="container-fluid p-0">
+                        {% if employeeworks or customers %}
+                            <div class="row mb-3 px-1">
+                                <div class="col col-12 col-sm-8 mb-2 mb-sm-0">
+                                    <p class="lead m-0">
+                                        <strong>Raporların</strong> çıktılarını almak için <strong class="d-none d-sm-inline">sağdaki</strong> <strong class="d-inline d-sm-none">alttaki</strong> tuşa basınız.
+                                    </p>
+                                </div>
+                                <div class="col col-12 col-sm-4 text-end mt-sm-0k">
+                                    <div class="d-grid d-sm-block">
+                                        <button class="btn btn-primary dropdown-toggle text-capitalize" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-download"></i> <span>Çıktı Al</span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'reqort_output' report_name=model_name output_type='csv' %}">
+                                                    <i class="bi bi-filetype-csv"></i>
+                                                    CSV
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'reqort_output' report_name=model_name output_type='json' %}">
+                                                    <i class="bi bi-filetype-json"></i>
+                                                    JSON
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-1">
+                                <div class="col col-12 overflow-x-auto">
+                                    <table class="table table-striped table-hover text-nowrap">
+                                        <caption>{{ report_name }} Tablosu</caption>
+                                        {% include report_table_include %}
+                                    </table>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col col-12">
+                                    <h4 class="h4 text-center">Vay canına! Hiç <u class="text-nowrap">{{ report_name }}</u> yokmuş 😦</h4>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
                 {% else %}
-                    <h4 class="h4 text-center text-muted m-0 w-100">Tabloları görüntülemek için <u class="d-none d-md-inline">soldaki</u><u class="d-inline d-md-none">yukarıdaki</u> tuşlara basınız.</h4>
+                    <div class="contianer-fluid p-0 h-100">
+                        <div class="row h-100">
+                            <div class="col col-12 h-100 d-flex align-items-center">
+                                <h4 class="h4 text-center text-muted m-0 w-100">Tabloları veya raporları görüntülemek için <u class="d-none d-md-inline">soldaki</u><u class="d-inline d-md-none">yukarıdaki</u> tuşlara basınız.</h4>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>

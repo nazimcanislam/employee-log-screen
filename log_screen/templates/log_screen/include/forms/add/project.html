@@ -2,7 +2,7 @@
 
 <div class="mb-3">
     <label for="project-customer-input" class="form-label">Müşteri</label>
-    <select class="form-select" name="project-customer-input" aria-label="Müşteri Seçin" id="project-customer-input" required>
+    <select class="form-select" name="project-customer-input" aria-label="Müşteri Seçin" id="project-customer-input" translate="no" required>
         <option value="">------</option>
         {% for customer in customers %}
             <option value="{{ customer_meta.model_name }}-{{ customer.id }}"{% if data.project_customer.id == customer.id %}selected{% endif %}>{{ customer }}</option>

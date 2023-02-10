@@ -1,0 +1,53 @@
+<thead>
+    <tr>
+        <th scope="col">Adı</th>
+        <th scope="col">Soyadı</th>
+        <th scope="col">Doğum Tarihi</th>
+        <th scope="col">Başlama Tarihi</th>
+        <th scope="col">İstifa Tarihi</th>
+        <th scope="col">Aktif</th>
+        <th scope="col">Mevcut Proje</th>
+        <th scope="col">Eylem</th>
+    </tr>
+</thead>
+<tbody class="table-group-divider">
+    {% for employee in results %}
+        <tr>
+            <td translate="no">
+                {{ employee.employee_first_name }}
+            </td>
+            <td translate="no">
+                {{ employee.employee_last_name }}
+            </td>
+            <td>
+                <time>{{ employee.employee_birthdate }}</time>
+            </td>
+            <td>
+                <time>{{ employee.employee_start_date }}</time>
+            </td>
+            <td>
+                {% if employee.employee_resignation_date %}
+                    <time>{{ employee.employee_resignation_date }}</time>
+                {% endif %}
+            </td>
+            <td>
+                {% if employee.employee_is_active %}
+                    <i class="bi bi-check-square-fill text-success"></i>
+                {% else %}
+                    <i class="bi bi-x-square-fill text-danger"></i>
+                {% endif %}
+            </td>
+            <td translate="no">
+                {% if employee.employee_current_project %}
+                    <a href="{% url 'edit' model_name='project' _id=employee.employee_current_project.id %}" class="link-primary text-decoration-none" translate="no">{{ employee.employee_current_project }}</a>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'edit' model_name=table_name _id=employee.id %}" class="link-primary text-decoration-none text-nowrap" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Düzenle: <span translate='no'>{{ employee }}</span>">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Düzenle</span>
+                </a>
+            </td> 
+        </tr>
+    {% endfor %}
+</tbody>

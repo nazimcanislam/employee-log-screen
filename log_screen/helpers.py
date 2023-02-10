@@ -1,43 +1,62 @@
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
 from .models import Customer, Project, Employee, EmployeeWork
 
 
-def greeting(user):
-    hour = datetime.now().hour
-    text = ""
+def greeting(user: User) -> str:
+    """A function that greets the user on the main page according to the current time.
 
-    name = user.first_name
+    Args:
+        user (User): Django user model to pick up user information.
+
+    Returns:
+        str: Returns a greeting message for user.
+    """
+
+    # Get the time and pass the time to the variable.
+    hour: int = datetime.now().hour
+
+    # Define a variable for the welcome text.
+    text: str = ""
+
+    # If user's last name is defined, use both first name and last name.
+    # If there is only the first name, use it only.
+    name: str = user.first_name
     if user.last_name:
         name = f'{user.first_name} {user.last_name}'
     elif name == '' and user.last_name == '':
         name = user.username
     
+    # Specify if the user is a superuser.
+    # In any case, prevent the user name from being translated by the browser.
     if user.is_superuser:
         name = f'<strong translate="no">{name} (admin)</strong>'
     else:
         name = f'<strong translate="no">{name}</strong>'
 
+    # Set a greeting based on time.
     if hour >= 5 and hour < 12:
-        text = f'Günaydın {name} <span data-bs-toggle="tooltip" data-bs-title="Günaydın güneşi">☀️</span>'
+        text = f'<span>Günaydın</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Günaydın güneşi">☀️</span>'
     elif hour >= 12 and hour < 15:
-        text = f'İyi Günler {name} <span data-bs-toggle="tooltip" data-bs-title="Havalı!">😎</span>'
+        text = f'<span>İyi Günler</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Havalı!">😎</span>'
     elif hour >= 15 and hour < 21:
-        text = f'İyi Akşamlar {name} <span data-bs-toggle="tooltip" data-bs-title="Batan Güneş">🌅</span>'
+        text = f'<span>İyi Akşamlar</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Batan Güneş">🌅</span>'
     elif (hour >= 21 and hour < 24) or (hour >= 0 and hour < 5):
-        text = f'İyi Geceler {name} <span data-bs-toggle="tooltip" data-bs-title="Uykulu">🥱</span>'
+        text = f'<span>İyi Geceler</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Uykulu">🥱</span>'
     else:
-        text = f'İyi Zamansal Yolculuklar {name} <span data-bs-toggle="tooltip" data-bs-title="Şaşırmış">😶</span>'
+        text = f'<span>İyi Zamansal Yolculuklar</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Şaşırmış">😶</span>'
     
+    # Return the greeting value.
     return text
 
 
 def get_post_data_customer(request, model_name):
     customer_name = request.POST.get('customer-name-input')
-    if customer_name == '':
+    if not customer_name:
         messages.add_message(request, messages.ERROR, 'Lütfen müşteri adını boş bırakmayınız!')
         return redirect('add_data', model_name=model_name)
     elif len(customer_name) < 3:
@@ -47,7 +66,7 @@ def get_post_data_customer(request, model_name):
         customer_name = customer_name.strip().title()
 
     customer_lead_date = request.POST.get('customer-lead-date-input')
-    if customer_lead_date == '':
+    if not customer_lead_date:
         messages.add_message(request, messages.ERROR, 'Lütfen müşterinin ön kayıt tarihini giriniz!')
         return redirect('add_data', model_name=model_name)
     else:
@@ -211,6 +230,8 @@ def get_post_data_employeework(request, model_name):
             messages.add_message(request, messages.ERROR, 'Lütfen günlük ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
             return redirect('add_data', model_name=model_name)
         employeework_daily_rate = int(employeework_daily_rate)
+    else:
+        employeework_daily_rate = None
 
     employeework_monthly_rate = request.POST.get('employeework-monthly-rate-input')
     if employeework_monthly_rate:
@@ -221,27 +242,31 @@ def get_post_data_employeework(request, model_name):
             messages.add_message(request, messages.ERROR, 'Lütfen aylık ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
             return redirect('add_data', model_name=model_name)
         employeework_monthly_rate = int(employeework_monthly_rate)
+    else:
+        employeework_monthly_rate = None
 
     employeework_effort = request.POST.get('employeework-effort-input')
     if employeework_effort:
         if not employeework_effort.isnumeric():
-            messages.add_message(request, messages.ERROR, 'Lütfen çaba ücret için bir sayı girdiğinizden emin olunuz!')
+            messages.add_message(request, messages.ERROR, 'Lütfen efor ücret için bir sayı girdiğinizden emin olunuz!')
             return redirect('add_data', model_name=model_name)
         elif int(employeework_effort) < 0:
-            messages.add_message(request, messages.ERROR, 'Lütfen çaba ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
+            messages.add_message(request, messages.ERROR, 'Lütfen efor ücret için 0\'dan büyük bir sayı girdiğinizden emin olunuz!')
             return redirect('add_data', model_name=model_name)
         employeework_effort = int(employeework_effort)
+    else:
+        employeework_effort = None
 
     employeework_effort_period = request.POST.get('employeework-effort-period-input')
     if employeework_effort_period == '':
-        messages.add_message(request, messages.ERROR, 'Lütfen proje işinin çaba dönemi giriniz!')
+        messages.add_message(request, messages.ERROR, 'Lütfen proje işinin efor dönemi giriniz!')
         return redirect('add_data', model_name=model_name)
     else:
         employeework_effort_period = employeework_effort_period.strip()
     try:
         employeework_effort_period = datetime.strptime(employeework_effort_period, '%Y-%m')
     except ValueError:
-        messages.add_message(request, messages.ERROR, 'Lütfen proje işinin çaba dönemini doğru girdiğinizden emin olunuz! giriniz!')
+        messages.add_message(request, messages.ERROR, 'Lütfen proje işinin efor dönemini doğru girdiğinizden emin olunuz! giriniz!')
         return redirect('add_data', model_name=model_name)
 
     return (employeework_employee, employeework_current_project, employeework_daily_rate, employeework_monthly_rate, employeework_effort, employeework_effort_period)

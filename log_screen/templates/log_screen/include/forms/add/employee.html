@@ -33,7 +33,7 @@
 
 <div class="mb-3">
     <label for="employee-current-project-input" class="form-label">Mevcut Proje</label>
-    <select class="form-select" name="employee-current-project-input" aria-label="Proje Seçin" id="employee-current-project-input">
+    <select class="form-select" name="employee-current-project-input" aria-label="Proje Seçin" id="employee-current-project-input" translate="no">
         <option>------</option>
         {% for project in projects %}
             <option value="{{ project_meta.model_name }}-{{ project.id }}"{% if data.employee_current_project.id == project.id %} selected{% endif %}>{{ project }}</option>

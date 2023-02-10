@@ -1,4 +1,4 @@
-{% extends 'log_screen/base.html' %}
+{% extends 'log_screen/bases/main.html' %}
 {% load static %}
 {% load log_screen_extras %}
 
@@ -11,8 +11,8 @@
                 <img src="{% static 'favicon_io/android-chrome-512x512.png' %}" alt="Logo" style="max-width: 64px; width: 100%;">
                 <h1 class="display-1">Personel Kayıt Ekranı</h1>
                 <p class="lead">Personellerinizi ve Projelerini Yönetin</p>
-                <a href="{% url 'login' %}" class="btn btn-primary">Giriş Yap</a>
-                <a href="{% url 'signup' %}" class="btn btn-outline-primary">Kayıt Ol</a>
+                <a href="{% url 'login' %}" class="btn btn-primary text-capitalize me-1">Giriş Yap</a>
+                <a href="{% url 'signup' %}" class="btn btn-outline-primary text-capitalize">Kayıt Ol</a>
             </div>
             <div class="col col-12 col-lg-6 p-0 px-2 p-lg-5">
                 <img src="{% static 'svg/undraw_organize_resume_re_k45b.svg' %}" class="img-fluid">

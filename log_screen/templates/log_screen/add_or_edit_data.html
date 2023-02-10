@@ -1,4 +1,4 @@
-{% extends 'log_screen/base.html' %}
+{% extends 'log_screen/bases/main.html' %}
 
 {% block title %}{{ model_meta.verbose_name }} Kaydı Ekle{% endblock title %}
 
@@ -6,13 +6,11 @@
     <div class="container my-5">
         <div class="row">
             <div class="col">
-                <h1 class="h1 text-center">
+                <h1 class="h1 text-center text-capitalize">
                     {% if adding %}
                         {{ model_meta.verbose_name }} Kaydı Ekle
                     {% elif editing %}
                         {{ model_meta.verbose_name }} Düzenle<br>{{ data }}
-                    {% else %}
-
                     {% endif %}
                 </h1>
             </div>
@@ -23,25 +21,28 @@
                     {% csrf_token %}
                     {% include include_form_name %}
 
-                    <div class="row-gap-2 row-gap-lg-0">
+                    <div class="d-flex gap-1 flex-wrap">
                         {% if adding %}
-                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ model_meta.verbose_name_plural }} tablosuna ekle">
+                            <button type="submit" class="btn btn-primary text-capitalize" data-bs-toggle="tooltip" data-bs-title="{{ model_meta.verbose_name_plural }} tablosuna ekle">
                                 <i class="bi bi-plus"></i>
-                                <strong>{{ model_meta.verbose_name }}</strong> Ekle
+                                <strong>{{ model_meta.verbose_name }}</strong>
+                                <span>Ekle</span>
                             </button>
                         {% elif editing %}
-                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ data }} verisini düzenle">
+                            <button type="submit" class="btn btn-primary text-capitalize" data-bs-toggle="tooltip" data-bs-title="{{ data }} verisini düzenle">
                                 <i class="bi bi-pencil-square"></i>
-                                <strong>{{ model_meta.verbose_name }}</strong> Düzenle
+                                <strong>{{ model_meta.verbose_name }}</strong>
+                                <span>Düzenle</span>
                             </button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-data-modal">
+                            <button type="button" class="btn btn-danger text-capitalize" data-bs-toggle="modal" data-bs-target="#delete-data-modal">
                                 <i class="bi bi-trash"></i>
-                                Sil
+                                <span>Sil</span>
                             </button>
                         {% endif %}
-                        <a href="/?model_name={{ model_meta.model_name }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Vazgeç ve geri dön">
+
+                        <a href="{% url 'index_show_table' table_name=model_meta.model_name %}" class="btn btn-secondary text-capitalize" data-bs-toggle="tooltip" data-bs-title="Vazgeç ve geri dön">
                             <i class="bi bi-slash-circle-fill"></i>
-                            Vazgeç
+                            <span>Vazgeç</span>
                         </a>
                     </div>
                 </form>
@@ -63,11 +64,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                             <i class="bi bi-slash-circle-fill"></i>
-                            Hayır, Vazgeçtim
+                            <span>Hayır, Vazgeçtim</span>
                         </button>
                         <a href="{% url 'delete' model_name=model_meta.model_name _id=data.id %}" type="button" class="btn btn-danger">
                             <i class="bi bi-trash"></i>
-                            Evet, Eminim
+                            <span>Evet, Eminim</span>
                         </a>
                     </div>
                 </div>

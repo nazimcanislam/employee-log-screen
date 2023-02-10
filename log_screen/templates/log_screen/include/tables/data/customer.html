@@ -1,0 +1,33 @@
+<thead>
+    <tr>
+        <th scope="col">Müşteri Adı</th>
+        <th scope="col">Mevcut Müşteri</th>
+        <th scope="col">Müşteri Ön Tarih</th>
+        <th scope="col">Eylem</th>
+    </tr>
+</thead>
+<tbody class="table-group-divider">
+    {% for customer in results %}
+        <tr>
+            <td translate="no">
+                {{ customer.customer_name }}
+            </td>
+            <td translate="no">
+                {% if customer.customer_current %}
+                    <i class="bi bi-check-square-fill text-success"></i>
+                {% else %}
+                    <i class="bi bi-x-square-fill text-danger"></i>
+                {% endif %}
+            </td>
+            <td>
+                <time>{{ customer.customer_lead_date|date:"d F Y" }}</time>
+            </td>
+            <td>
+                <a href="{% url 'edit' model_name=table_name _id=customer.id %}" class="link-primary text-decoration-none text-nowrap" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Düzenle: <span translate='no'>{{ customer }}</span>">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Düzenle</span>
+                </a>
+            </td> 
+        </tr>
+    {% endfor %}
+</tbody>

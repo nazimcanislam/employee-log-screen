@@ -1,7 +1,8 @@
-{% extends 'log_screen/base.html' %}
+{% extends 'log_screen/bases/main.html' %}
 {% load static %}
+{% load log_screen_extras %}
 
-{% block title %}Personel Kayıt Ekranı | Kayıt{% endblock title %}
+{% block title %}{% get_app_label %} | Kayıt{% endblock title %}
 
 {% block content %}
     <div class="container my-5">

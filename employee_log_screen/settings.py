@@ -64,6 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+if not DEBUG:
+    MIDDLEWARE.append("strip_whitespace.middlewares.HtmlStripWhiteSpaceMiddleware.html_strip_whitespace")
+
 ROOT_URLCONF = 'employee_log_screen.urls'
 
 TEMPLATES = [
@@ -191,3 +194,6 @@ PWA_APP_ICONS_APPLE = [
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'tr'
 PWA_APP_DEBUG_MODE = DEBUG
+
+# Set the login URL.
+LOGIN_URL = '/login'
