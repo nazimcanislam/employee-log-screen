@@ -23,19 +23,21 @@ from django.contrib.messages import constants
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Define environment object for values.
-env = environ.Env()
+env = environ.Env(
+    DEBUG=(bool, False),
+)
 env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-akbscn_0f@9frwy48z4a_j_s%5!q&#6m$@4&j_4z3rcjc7d-10'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 APP_VERSION_NUMBER = env('APP_VERSION_NUMBER')
 APP_LABEL = 'Personel Kayıt Ekranı'
@@ -95,17 +97,19 @@ WSGI_APPLICATION = 'employee_log_screen.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"), 
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"), 
-        'PORT': env("DB_PORT"),
-    }
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': env("DB_NAME"),
+    #     'USER': env("DB_USER"), 
+    #     'PASSWORD': env("DB_PASSWORD"),
+    #     'HOST': env("DB_HOST"), 
+    #     'PORT': env("DB_PORT"),
+    # }
+
+    'default': env.db()
 }
 
 
