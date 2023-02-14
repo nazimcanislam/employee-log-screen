@@ -1,4 +1,4 @@
-# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Employee Log Screen
+# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Employee Log Screen (Needs Doc Update)
 
 User interface using Django to add staff and clients and associate projects.
 

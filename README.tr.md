@@ -1,4 +1,4 @@
-# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Personel Kayıt Ekranı
+# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Personel Kayıt Ekranı (Döküman Güncellemesi Gerekli)
 
 Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django kullanan arayüz.
 

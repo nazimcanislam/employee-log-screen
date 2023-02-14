@@ -23,9 +23,7 @@ from django.contrib.messages import constants
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Define environment object for values.
-env = environ.Env(
-    DEBUG=(bool, False),
-)
+env = environ.Env()
 env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
@@ -97,19 +95,17 @@ WSGI_APPLICATION = 'employee_log_screen.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
 
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': env("DB_NAME"),
-    #     'USER': env("DB_USER"), 
-    #     'PASSWORD': env("DB_PASSWORD"),
-    #     'HOST': env("DB_HOST"), 
-    #     'PORT': env("DB_PORT"),
-    # }
-
-    'default': env.db()
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": env("POSTGRES_NAME"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("SQL_HOST"),
+        "PORT": env("SQL_PORT"),
+    }
 }
 
 
