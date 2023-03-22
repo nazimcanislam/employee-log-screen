@@ -1,4 +1,4 @@
-# <img src="log_screen/static/favicon_io/favicon-32x32.png"> Personel Kayıt Ekranı (Döküman Güncellemesi Gerekli)
+# <img src="app/log_screen/static/favicon_io/favicon-32x32.png"> Personel Kayıt Ekranı
 
 Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django kullanan arayüz.
 
@@ -8,12 +8,13 @@ Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django kullan
 - Django 4.1
 - Pyscopg2
 - PostgreSql 15
+- Docker
 
 ## Sunucuyu Çalıştırmak
 
 ### Veri Tabanını Tanımla
 
-Django sunucusunun PostgreSql ile iletişime geçebilmesi için gerekli olan bilgileri `.env` dosyasındaki alanların karşılarına yazmak gerekir.
+Django sunucusunun PostgreSql ile iletişime geçebilmesi için gerekli olan bilgileri `app/.env` dosyasındaki alanların karşılarına yazmak gerekir. Eğer bu dosya yok ise oluşturun.
 
 ```
 DB_NAME=example_db_name
@@ -23,58 +24,39 @@ DB_HOST=127.0.0.1
 DB_PORT=5432
 ```
 
-### Python İçin Sanal Ortam Oluştur
+### Docker İmajı Oluştur ve Çalıştır
 
-Django ve diğer gerekli kütüphaneler için sanal ortam oluşturalım...
+Geliştirme ve ürün imajları oluşturabiliriz.
 
-```bash
-python3 -m virtualenv venv
-```
+#### Geliştirme İçin
 
-Sanal ortamı çalıştıralım (Windows)
-
-```powershell
-.\venv\Scripts\activate.bat
-```
-
-Sanal ortamı çalıştıralım (Unix)
+Bu komut `docker-compose.dev.yml` dosyasındaki veriler ile imajlar oluşturup çalıştırır.
 
 ```bash
-source ./venv/bin/activate
+docker-compose -f docker-compose.dev.yml up
 ```
 
-Gerekli kütüphaneleri kuralım...
+#### Ürün Haline Getirmek İçin
+
+`app/.env` dosyası hazır olduğunda ürünselleştirmek için olan imajı oluşturun ve çalıştırmak için bu komudu girin. Ayrıca `-d` eki sayesinde uygulama arka planda çalışır.
 
 ```bash
-pip install -r requirements.txt
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### Veri Tabanı Tablolarını Onaylamak
+Artık uygulamanız <a href="http://127.0.0.1:8000">127.0.0.1:8000</a>. adresinde çalışır halde.
 
-Django projemizin modellerini onaylamak için yazacağımız kodlar...
+### Süper Kullanıcı Oluştur
+
+Uygulamayı durdurduktan sonra konteynırın içinden Django'ya bir süper kullanıcı oluşturmasını söylemek için:
 
 ```bash
-python manage.py makemigrations
-```
+docker-compose -f docker-compose.prod.yml run web python manage.py createsuperuser
+````
 
-```bash
-python manage.py migrate
-```
 
-### Süper Kullanıcı Oluşturmak
+- `-f` kısaca geliştirme ortamını oluşturmak ve tabii ki ürünselleştirme imajlarını oluşturup çalıştırmak için gerekli ayar dosyalarını belirtir. Geliştirme için `docker-compose.dev.yml`, ürünselleştirme için `docker-compose.prod.yml` dosyasını kullanın.
+- `web`, Django uygulamasının Docker konteynır adıdır.
+- Bu komutu girdikten sonra süper kullanıcı oluşturmak için kullanıcı adı ve parola girmeniz gerekir.
 
-Uygulamayı kullanabilmek için bir süper kullanıcıya ihtiyamıcız var. Django'nun komut satırı ile süper kullanıcımızı oluşturabiliriz.
-
-```bash
-python manage.py createsuperuser
-```
-
-### Sunucuyu Başlatmak
-
-Proje klasöründe çalıştıracağımız kod...
-
-```bash
-python manage.py runserver
-```
-
-Artık proje <a href="http://127.0.0.1:8000">127.0.0.1:8000</a> adresinde sunucumuz çalışır halde.
+Şimdi tekrar docker imajını çalıştıraiblirsiniz!
