@@ -1,5 +1,5 @@
 # Pull official image
-FROM python:3.11-slim
+FROM --platform=linux/amd64 python:3.11-slim
 
 # Set the app work directory
 WORKDIR /usr/src/app/
