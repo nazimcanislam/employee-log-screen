@@ -1,0 +1,41 @@
+<div class="container-fluid p-0">
+    <div class="row justify-content-center">
+        <div class="col col-12 col-sm-8">
+            <h2 class="h2">Temel Bilgileri Düzenle</h2>
+            <hr>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="fullname-input" class="form-label">Tam Ad</label>
+                    <input type="text" name="fullname-input" id="fullname-input" class="form-control" minlength="3" aria-describedby="fullname-help" autocapitalize="words" value="{% if request.user.first_name %}{{ request.user.first_name }}{% endif %}{% if request.user.last_name %} {{ request.user.last_name }}{% endif %}">
+                
+                    <div id="fullname-help" class="form-text">
+                        Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="username-input" class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" name="username-input" id="username-input" minlength="5" aria-describedby="username-help" autocapitalize="off" value="{{ request.user.username }}">
+
+                    <div id="username-help" class="form-text">
+                        Lütfen en az 5 karakter uzunluğunda bir kullanıcı adı giriniz.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email-input" class="form-label">E-Posta</label>
+                    <input type="email" name="email-input" id="email-input" class="form-control" value="{{ request.user.email }}">
+                </div>
+
+                <div class="d-grid d-sm-block">
+                    <button type="submit" role="button" class="btn btn-primary">
+                        <i class="bi bi-pencil-square"></i>
+                        Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

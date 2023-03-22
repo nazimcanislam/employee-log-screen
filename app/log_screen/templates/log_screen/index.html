@@ -24,24 +24,40 @@
                         <div class="col col-12">
                             <h6 class="h6">Tablolar</h6>
                             <div class="list-group">
-                                <a href="{% if request.path == '/tables/customer/' %}/{% else %}/tables/customer/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/customer/' %} active{% endif %}"{% if request.path == '/tables/customer/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-person-heart me-1"></i>
-                                    Müşteriler
+                                <a href="{% if request.path == '/tables/customer/' %}/{% else %}/tables/customer/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/tables/customer/' %} active{% endif %}"{% if request.path == '/tables/customer/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-person-heart me-1"></i>
+                                        Müşteriler
+                                    </span>
+
+                                    <span>{% get_customers_count request %}</span>
                                 </a>
 
-                                <a href="{% if request.path == '/tables/project/' %}/{% else %}/tables/project/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/project/' %} active{% endif %}"{% if request.path == '/tables/project/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-clipboard-data-fill me-1"></i>
-                                    Projeler
+                                <a href="{% if request.path == '/tables/project/' %}/{% else %}/tables/project/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/tables/project/' %} active{% endif %}"{% if request.path == '/tables/project/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-clipboard-data-fill me-1"></i>
+                                        Projeler
+                                    </span>
+
+                                    <span>{% get_projects_count request %}</span>
                                 </a>
 
-                                <a href="{% if request.path == '/tables/employee/' %}/{% else %}/tables/employee/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/employee/' %} active{% endif %}"{% if request.path == '/tables/employee/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-people-fill me-1"></i>
-                                    Personeller
+                                <a href="{% if request.path == '/tables/employee/' %}/{% else %}/tables/employee/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/tables/employee/' %} active{% endif %}"{% if request.path == '/tables/employee/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-people-fill me-1"></i>
+                                        Personeller
+                                    </span>
+
+                                    <span>{% get_employies_count request %}</span>
                                 </a>
 
-                                <a href="{% if request.path == '/tables/employeework/' %}/{% else %}/tables/employeework/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/tables/employeework/' %} active{% endif %}"{% if request.path == '/tables/employeework/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-person-vcard-fill me-1"></i>
-                                    Personeller İşleri
+                                <a href="{% if request.path == '/tables/employeework/' %}/{% else %}/tables/employeework/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/tables/employeework/' %} active{% endif %}"{% if request.path == '/tables/employeework/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-person-vcard-fill me-1"></i>
+                                        Personeller İşleri
+                                    </span>
+
+                                    <span>{% get_employeeworks_count request %}</span>
                                 </a>
                             </div>
 
@@ -50,13 +66,21 @@
                                 <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-title="Personel işlerinin ve müşterilerinin verileri otomatik raporlanır."></i>
                             </h6>
                             <div class="list-group">
-                                <a href="{% if request.path == '/reports/employeework/' %}/{% else %}/reports/employeework/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/reports/employeework/' %} active{% endif %}"{% if request.path == '/reports/employeework/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-person-vcard-fill me-1"></i>
-                                    <span>Personeller İşleri Raporları</span>
+                                <a href="{% if request.path == '/reports/employeework/' %}/{% else %}/reports/employeework/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/reports/employeework/' %} active{% endif %}"{% if request.path == '/reports/employeework/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-person-vcard-fill me-1"></i>
+                                        <span>Personeller İşleri Raporları</span>
+                                    </span>
+
+                                    <span>{% get_employeeworks_count request %}</span>
                                 </a>
-                                <a href="{% if request.path == '/reports/customer/' %}/{% else %}/reports/customer/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/reports/customer/' %} active{% endif %}"{% if request.path == '/reports/customer/' %} aria-current="true"{% endif %}>
-                                    <i class="bi bi-person-heart me-1"></i>
-                                    <span>Müşteriler Raporları</span>
+                                <a href="{% if request.path == '/reports/customer/' %}/{% else %}/reports/customer/{% endif %}" class="d-flex justify-content-between list-group-item list-group-item-action{% if request.path == '/reports/customer/' %} active{% endif %}"{% if request.path == '/reports/customer/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-person-heart me-1"></i>
+                                        <span>Müşteriler Raporları</span>
+                                    </span>
+
+                                    <span>{% get_customers_count request %}</span>
                                 </a>
                             </div>
                         </div>

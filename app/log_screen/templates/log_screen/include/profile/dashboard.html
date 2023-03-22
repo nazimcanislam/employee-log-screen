@@ -1,0 +1,48 @@
+{% load log_screen_extras %}
+
+<div class="container-fluid p-0">
+    <div class="row justify-content-start text-center">
+        <div class="col col-6 col-md-4 col-lg-3 p-3 mb-4 mb-lg-0">
+            <h4 class="h4">
+                {% if request.user.first_name and request.user.last_name %}
+                    {{ request.user.first_name }} {{ request.user.last_name }}
+                {% elif request.user.first_name %}
+                    {{ request.user.first_name }}
+                {% else %}
+                    {{ request.user.username }}
+                {% endif %}
+            </h4>
+            <h5 class="h5 text-secondary">Ad Soyad</h5>
+            <a href="{% url 'profile_basic' %}" class="link-primary text-decoration-none" role="link">
+                <i class="bi bi-pencil-square"></i>
+                Düzenle
+            </a>
+        </div>
+
+        <div class="col col-6 col-md-4 col-lg-3 p-3 mb-4 mb-lg-0">
+            <h4 class="h4">{% get_all_tables_count request %}</h4>
+            <h5 class="h5 text-secondary">Tablo Verisi</h5>
+            <a href="{% url 'index' %}" class="link-primary text-decoration-none" role="link">
+                <i class="bi bi-box-arrow-up-right"></i>
+                İncele
+            </a>
+        </div>
+
+        <div class="col col-6 col-md-4 col-lg-3 p-3 mb-4 mb-lg-0">
+            <h4 class="h4">
+                <span class="money-number">{{ total_effort }}</span> ₺
+            </h4>
+            <h5 class="h5 text-secondary">Toplam Kazanç</h5>
+            <a href="{% url 'index_show_report' report_name='customer' %}" class="link-primary text-decoration-none" role="link">
+                <i class="bi bi-box-arrow-up-right"></i>
+                İncele
+            </a>
+        </div>     
+
+        <div class="col col-6 col-md-4 col-lg-3 p-3 mb-4 mb-lg-0">
+            <h4 class="h4">{{ request.user.date_joined|date:"d F Y" }}</h4>
+            <h5 class="h5 text-secondary">Katılma Tarihi</h5>
+            <h5 class="h5">🥳</h5>
+        </div>                
+    </div>
+</div>

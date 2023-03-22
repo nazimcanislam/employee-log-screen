@@ -28,7 +28,11 @@
 
 <div class="mb-3">
     <label for="employee-resignation-input" class="form-label">İstifa Tarihi</label>
-    <input type="date" class="form-control" name="employee-resignation-input" id="employee-resignation-input" value="{{ data.employee_resignation_date|date:'Y-m-d' }}">
+    <input type="date" class="form-control" name="employee-resignation-input" id="employee-resignation-input" aria-describedby="employee-resignation-help" value="{{ data.employee_resignation_date|date:'Y-m-d' }}">
+
+    <div class="form-text" id="employee-resignation-help">
+        İstifa Tarihi alanı boş bırakılabilir.
+    </div>
 </div>
 
 <div class="mb-3">

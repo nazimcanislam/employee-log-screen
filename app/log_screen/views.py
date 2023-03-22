@@ -44,19 +44,19 @@ def index_show_table(request: HttpRequest, table_name: str) -> HttpResponse:
         case 'customer':
             context['table_verbose_name'] = Customer._meta.verbose_name
             context['table_verbose_name_plural'] = Customer._meta.verbose_name_plural
-            context['results'] = Customer.objects.filter(author=request.user)
+            context['results'] = Customer.objects.filter(author=request.user).order_by('-id')
         case 'project':
             context['table_verbose_name'] = Project._meta.verbose_name
             context['table_verbose_name_plural'] = Project._meta.verbose_name_plural
-            context['results'] = Project.objects.filter(author=request.user)
+            context['results'] = Project.objects.filter(author=request.user).order_by('-id')
         case 'employee':
             context['table_verbose_name'] = Employee._meta.verbose_name
             context['table_verbose_name_plural'] = Employee._meta.verbose_name_plural
-            context['results'] = Employee.objects.filter(author=request.user)
+            context['results'] = Employee.objects.filter(author=request.user).order_by('-id')
         case 'employeework':
             context['table_verbose_name'] = EmployeeWork._meta.verbose_name
             context['table_verbose_name_plural'] = EmployeeWork._meta.verbose_name_plural
-            context['results'] = EmployeeWork.objects.filter(author=request.user)
+            context['results'] = EmployeeWork.objects.filter(author=request.user).order_by('-id')
         case _:
             return redirect('index')
     
@@ -104,9 +104,9 @@ def index_show_report(request: HttpRequest, report_name: str) -> HttpResponse:
         case 'employeework':
             context['report_name'] = 'Personeller İşleri Raporları'
             context['report_table_include'] = f'log_screen/include/tables/report/{report_name}.html'
-            context['employeeworks'] = EmployeeWork.objects.filter(author=request.user)
+            context['employeeworks'] = EmployeeWork.objects.filter(author=request.user).order_by('-id')
         case 'customer':
-            customers = Customer.objects.filter(author=request.user)
+            customers = Customer.objects.filter(author=request.user).order_by('-id')
             context['report_name'] = 'Müşteri Raporları'
             context['report_table_include'] = f'log_screen/include/tables/report/{report_name}.html'
             context['customers'] = customers
@@ -610,3 +610,147 @@ def delete_data_view(request: HttpRequest, model_name: str, _id: int) -> HttpRes
     # If there is no problem, create message and redirect back to tables.
     messages.add_message(request, messages.SUCCESS, 'Veri silindi.')
     return redirect('index_show_table', table_name=model_name)
+
+
+@login_required
+def profile(request: HttpRequest) -> HttpResponse:
+    total_effort = 0
+    customers = Customer.objects.filter(author=request.user)
+    employee_works = EmployeeWork.objects.filter(author=request.user)
+    for employee_work in employee_works:
+        for customer in customers:
+            if customer.id == employee_work.employeework_current_project.project_customer.id:
+                total_effort += employee_work.calculate_effort()
+
+    context = {
+        'total_effort': total_effort,
+        'profile_content': 'log_screen/include/profile/dashboard.html',
+    }
+    return render(request, 'log_screen/profile.html', context)
+
+
+@login_required
+def profile_basic(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        full_name = request.POST.get('fullname-input').strip()
+
+        if not full_name:
+            messages.add_message(request, messages.ERROR, 'Lütfen ad soyad kısmını boş bırakmayınız!')
+            return redirect('profile_basic')
+        elif len(full_name) < 3:
+            messages.add_message(request, messages.ERROR, 'Lütfen en az 3 karakter uzunluğunda bir ad giriniz!')
+            return redirect('profile_basic')
+
+        name_array = full_name.split(' ')
+        name_array_length = len(name_array)
+        
+        if name_array_length == 1:
+            first_name = name_array[0].title()
+            last_name = ""
+        elif name_array_length == 2:
+            first_name = name_array[0].title()
+            last_name = name_array[1].title()
+        else:
+            last_name = name_array.pop()
+            first_name = ' '.join(name_array).title()
+        
+        username = request.POST.get('username-input').strip().lower()
+        if not username:
+            messages.add_message(request, messages.ERROR, 'Lütfen kullanıcı adı kısmını boş bırakmayınız!')
+            return redirect('profile_basic')
+        elif len(username) < 5:
+            messages.add_message(request, messages.ERROR, 'Lütfen en az 5 karakter uzunluğunda bir kullanıcı adı giriniz!')
+            return redirect('profile_basic')
+        
+        try:
+            user = User.objects.get(username=username)
+            if user:
+                if user.id != request.user.id:
+                    messages.add_message(request, messages.ERROR, 'Böyle bir kullanıcı adı zaten kullanımda!')
+                    return redirect('profile_basic')
+        except User.DoesNotExist:
+            pass
+        
+        email = request.POST.get('email-input').strip()
+        if not email:
+            messages.add_message(request, messages.ERROR, 'Lütfen E-Posta kısmını boş bırakmayınız!')
+            return redirect('profile_basic')
+
+        try:
+            user = User.objects.get(email=email)
+            if user:
+                if user.id != request.user.id:
+                    messages.add_message(request, messages.ERROR, 'Böyle bir E-Posta adresi zaten kullanımda!')
+                    return redirect('profile_basic')
+        except User.DoesNotExist:
+            pass
+
+        user = User.objects.get(id=request.user.id)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.email = email
+        user.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Temel Bilgiler düzenlendi!')
+        return redirect('profile')
+
+    context = {
+        'profile_content': 'log_screen/include/profile/basic.html'
+    }
+
+    return render(request, 'log_screen/profile.html', context)
+
+
+@login_required
+def profile_password(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        current_password = request.POST.get('current-password-input')
+        if not current_password:
+            messages.add_message(request, messages.ERROR, 'Lütfen mevcut parolanızı giriniz!')
+            return redirect('profile_password')
+        elif not request.user.check_password(current_password):
+            messages.add_message(request, messages.SUCCESS, 'Girmiş olduğunuz <strong>Mevcut Parola</strong> yanlış! Parolanızı unuttuysanız <strong>Parolamı Unuttum</strong> bölümüne gidiniz.')
+            return redirect('profile_password')
+        
+        new_password = request.POST.get('new-password-again-input')
+        if not new_password:
+            messages.add_message(request, messages.ERROR, 'Lütfen yeni parolanızı giriniz!')
+            return redirect('profile_password')
+        elif request.user.check_password(new_password):
+            messages.add_message(request, messages.ERROR, 'Mevcut parola ile yeni parola aynı olamaz!')
+            return redirect('profile_password')
+        elif len(new_password) < 8:
+            messages.add_message(request, messages.ERROR, 'Yeni parola en az 8 karakterden oluşmalıdır!')
+            return redirect('profile_password')
+        elif not any(list(map(lambda x: x.isupper(), new_password))):
+            messages.add_message(request, messages.ERROR, 'Yeni parolada en az 1 büyük harf bulunmalıdır!')
+            return redirect('profile_password')
+        elif not any(list(map(lambda x: x.isnumeric(), new_password))):
+            messages.add_message(request, messages.ERROR, 'Yeni parolada en az 1 sayı bulunmalıdır!')
+            return redirect('profile_password')
+        
+        new_password_again = request.POST.get('new-password-again-input')
+        if new_password != new_password_again:
+            messages.add_message(request, messages.ERROR, 'Lütfen parolaların aynı olduğundan emin olunuz!')
+            return redirect('profile_password')
+    
+        request.user.set_password(new_password)
+        request.user.save()
+        messages.add_message(request, messages.SUCCESS, 'Parola değiştirme işlemi başarılı! Lütfen tekrar giriş yapınız.')
+        return redirect('login')
+
+    context = {
+        'profile_content': 'log_screen/include/profile/password.html'
+    }
+
+    return render(request, 'log_screen/profile.html', context)
+
+
+@login_required
+def profile_password_forget(request: HttpRequest) -> HttpResponse:
+    context = {
+        'profile_content': 'log_screen/include/profile/password_forget.html'
+    }
+    return render(request, 'log_screen/profile.html', context)
+

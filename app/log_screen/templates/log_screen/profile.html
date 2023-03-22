@@ -1,0 +1,68 @@
+{% extends 'log_screen/bases/main.html' %}
+{% load log_screen_extras %}
+
+{% block title %}
+    {% get_app_label %}
+
+    {% if subtitle %}
+        | {{ subtitle }}
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid my-5">
+        <div class="row mb-3">
+            <div class="col">
+                <h2 class="display-6 text-center text-sm-start text-capitalize">Profilinize Hoş Geldiniz 😎</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col col-12 col-md-4 col-lg-3 mb-4 mb-md-0">
+                <div class="container-fluid p-0">
+                    <div class="row text-capitalize">
+                        <div class="col col-12">
+                            <div class="list-group">
+                                <a href="{% if request.path == '/profile/' %}/profile/{% else %}/profile/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/profile/' %} active{% endif %}"{% if request.path == '/profile/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-bar-chart-line-fill"></i>
+                                        Özet
+                                    </span>
+                                </a>
+
+                                <a href="{% if request.path == '/profile/basic/' %}/{% else %}/profile/basic/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/profile/basic/' %} active{% endif %}"{% if request.path == '/profile/basic/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-person-fill"></i>
+                                        Temel Bilgiler
+                                    </span>
+                                </a>
+
+                                <a href="{% if request.path == '/profile/password/' %}/{% else %}/profile/password/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/profile/password/' %} active{% endif %}"{% if request.path == '/profile/password/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-key-fill"></i>
+                                        Parola
+                                    </span>
+                                </a>
+
+                                <a href="{% if request.path == '/profile/password/forget/' %}/{% else %}/profile/password/forget/{% endif %}" class="list-group-item list-group-item-action{% if request.path == '/profile/password/forget/' %} active{% endif %}"{% if request.path == '/profile/password/forget/' %} aria-current="true"{% endif %}>
+                                    <span>
+                                        <i class="bi bi-key"></i>
+                                        Parolamı Unuttum
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-12 col-md-8 col-lg-9">
+                {% if profile_content %}
+                    {% include profile_content %}
+                {% else %}
+                    <h3 class="h3 text-muted text-center">Burada bir şey yok anlaşılan.</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

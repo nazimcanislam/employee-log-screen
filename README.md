@@ -46,7 +46,7 @@ docker-compose -f docker-compose.prod.yml up -d
 
 Now your project is running at <a href="http://127.0.0.1:8000">127.0.0.1:8000</a>.
 
-### Creating a Super User
+<h3>Creating a Super User</h3>
 
 After stopping the application, we reach inside the container and tell Django to create a superuser.
 
