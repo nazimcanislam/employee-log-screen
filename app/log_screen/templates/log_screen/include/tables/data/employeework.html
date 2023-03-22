@@ -19,10 +19,14 @@
                     <i class="bi bi-x-square-fill text-danger" data-bs-toggle="tooltip" data-bs-title="Aktif Olmayan Personel"></i>
                 {% endif %}
 
-                <a href="{% url 'edit' model_name='employee' _id=employeework.employeework_employee.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee }}</a>
+                {% if employeework.employeework_employee.id %}
+                    <a href="{% url 'edit' model_name='employee' _id=employeework.employeework_employee.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee }}</a>
+                {% endif %}
             </td>
             <td>
-                <a href="{% url 'edit' model_name='project' _id=employeework.employeework_employee.employee_current_project.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee.employee_current_project }}</a>
+                {% if employeework.employeework_employee.employee_current_project.id %}
+                    <a href="{% url 'edit' model_name='project' _id=employeework.employeework_employee.employee_current_project.id %}" class="link-primary text-decoration-none" translate="no">{{ employeework.employeework_employee.employee_current_project }}</a>
+                {% endif %}
             </td>
             <td>
                 {% if employeework.employeework_daily_rate %}
@@ -40,7 +44,9 @@
                 {% endif %}
             </td>
             <td>
-                {{ employeework.employeework_effort_period|date:"F Y" }}
+                {% if employeework.employeework_effort_period %}
+                    {{ employeework.employeework_effort_period|date:"F Y" }}
+                {% endif %}
             </td>
             <td>
                 <a href="{% url 'edit' model_name=table_name _id=employeework.id %}" class="link-primary text-decoration-none text-nowrap" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Düzenle: <span translate='no'>{{ employeework }}</span>">

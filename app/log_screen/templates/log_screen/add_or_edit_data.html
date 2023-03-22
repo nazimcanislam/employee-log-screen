@@ -23,18 +23,18 @@
 
                     <div class="d-flex gap-1 flex-wrap">
                         {% if adding %}
-                            <button type="submit" class="btn btn-primary text-capitalize" data-bs-toggle="tooltip" data-bs-title="{{ model_meta.verbose_name_plural }} tablosuna ekle">
+                            <button type="submit" class="btn btn-primary text-capitalize" role="button" data-bs-toggle="tooltip" data-bs-title="{{ model_meta.verbose_name_plural }} tablosuna ekle">
                                 <i class="bi bi-plus"></i>
                                 <strong>{{ model_meta.verbose_name }}</strong>
                                 <span>Ekle</span>
                             </button>
                         {% elif editing %}
-                            <button type="submit" class="btn btn-primary text-capitalize" data-bs-toggle="tooltip" data-bs-title="{{ data }} verisini düzenle">
+                            <button type="submit" class="btn btn-primary text-capitalize" role="button" data-bs-toggle="tooltip" data-bs-title="{{ data }} verisini düzenle">
                                 <i class="bi bi-pencil-square"></i>
                                 <strong>{{ model_meta.verbose_name }}</strong>
                                 <span>Düzenle</span>
                             </button>
-                            <button type="button" class="btn btn-danger text-capitalize" data-bs-toggle="modal" data-bs-target="#delete-data-modal">
+                            <button type="button" class="btn btn-danger text-capitalize" role="button" data-bs-toggle="modal" data-bs-target="#delete-data-modal">
                                 <i class="bi bi-trash"></i>
                                 <span>Sil</span>
                             </button>
