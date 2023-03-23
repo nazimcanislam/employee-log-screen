@@ -1,5 +1,6 @@
 import csv
 import json
+import math
 import datetime
 
 from django.http import HttpRequest
@@ -88,6 +89,36 @@ def index_show_table(request: HttpRequest, table_name: str) -> HttpResponse:
 
         context['search'] = search
 
+    
+    page = 1
+    pagination = request.GET.get('pagination')
+    if pagination:
+        if pagination.isnumeric():
+            pagination = int(pagination)
+            page = pagination
+    
+    data_per_page = 20
+    
+    max_page_length = math.ceil(len(context['results']) / data_per_page)
+    paginations = [str(x) for x in range(1, max_page_length + 1, 1)]
+
+    context['previos_page'] = str(page - 1)
+    context['current_page'] = str(page)
+    context['next_page'] = str(page + 1)
+    
+    end = page * data_per_page
+
+    if page == 1:
+        page -= 1
+    elif page > 1:
+        page -= 1
+        page *= data_per_page
+
+    start = page
+
+    context['paginations'] = paginations
+    context['results'] = context['results'][start:end]
+
     return render(request, 'log_screen/index.html', context)
 
 
@@ -128,7 +159,7 @@ def index_show_report(request: HttpRequest, report_name: str) -> HttpResponse:
 
 
 @login_required
-def reqort_output(request: HttpRequest, report_name: str, output_type: str) -> HttpResponse:
+def report_output(request: HttpRequest, report_name: str, output_type: str) -> HttpResponse:
     now = datetime.datetime.now()
     now_string = f'{now.year}-{now.month}-{now.day}'
 
@@ -185,6 +216,9 @@ def reqort_output(request: HttpRequest, report_name: str, output_type: str) -> H
                         return resposne
                     case _:
                         return redirect('index')
+            else:
+                messages.add_message(request, messages.WARNING, 'Personel İşleri Raporları\'nda hiç indirmek üzere veri bulunmuyor.')
+                return redirect('index_show_report', report_name=report_name)
         case 'customer':
             customers = Customer.objects.filter(author=request.user)
             employee_works = EmployeeWork.objects.filter(author=request.user)
@@ -240,6 +274,9 @@ def reqort_output(request: HttpRequest, report_name: str, output_type: str) -> H
                         return resposne
                     case _:
                         return redirect('index')
+            else:
+                messages.add_message(request, messages.WARNING, 'Müşteri Raporlarını indirebilmek için Personel İşleri Raporları tablosunda en az 1 veri bulunmalıdır.')
+                return redirect('index_show_report', report_name=report_name)
         case _:
             return redirect('index')
     
@@ -480,15 +517,15 @@ def add_data_to_table(request: HttpRequest, model_name: str) -> HttpResponse:
         return redirect('index_show_table', table_name=model_name)
 
     if model_name == 'project':
-        context['customers'] = Customer.objects.filter(author=request.user)
+        context['customers'] = Customer.objects.filter(author=request.user).order_by('-id')
         context['customer_meta'] = Customer._meta
     elif model_name == 'employee':
-        context['projects'] = Project.objects.filter(author=request.user)
+        context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta
     elif model_name == 'employeework':
-        context['employies'] = Employee.objects.filter(author=request.user)
+        context['employies'] = Employee.objects.filter(author=request.user).order_by('-id')
         context['employee_meta'] = Employee._meta
-        context['projects'] = Project.objects.filter(author=request.user)
+        context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta
 
     return render(request, 'log_screen/add_or_edit_data.html', context)
@@ -561,15 +598,15 @@ def edit_data(request: HttpRequest, model_name: str, _id: int) -> HttpResponse:
         return redirect('index_show_table', table_name=model_name)
 
     if model_name == 'project':
-        context['customers'] = Customer.objects.filter(author=request.user)
+        context['customers'] = Customer.objects.filter(author=request.user).order_by('-id')
         context['customer_meta'] = Customer._meta
     elif model_name == 'employee':
-        context['projects'] = Project.objects.filter(author=request.user)
+        context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta
     elif model_name == 'employeework':
-        context['employies'] = Employee.objects.filter(author=request.user)
+        context['employies'] = Employee.objects.filter(author=request.user).order_by('-id')
         context['employee_meta'] = Employee._meta
-        context['projects'] = Project.objects.filter(author=request.user)
+        context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta
 
     return render(request, 'log_screen/add_or_edit_data.html', context)
@@ -625,6 +662,7 @@ def profile(request: HttpRequest) -> HttpResponse:
     context = {
         'total_effort': total_effort,
         'profile_content': 'log_screen/include/profile/dashboard.html',
+        'subtitle': 'Profil Özeti'
     }
     return render(request, 'log_screen/profile.html', context)
 
@@ -696,7 +734,8 @@ def profile_basic(request: HttpRequest) -> HttpResponse:
         return redirect('profile')
 
     context = {
-        'profile_content': 'log_screen/include/profile/basic.html'
+        'profile_content': 'log_screen/include/profile/basic.html',
+        'subtitle': 'Temel Bilgileri Düzenle'
     }
 
     return render(request, 'log_screen/profile.html', context)
@@ -741,7 +780,8 @@ def profile_password(request: HttpRequest) -> HttpResponse:
         return redirect('login')
 
     context = {
-        'profile_content': 'log_screen/include/profile/password.html'
+        'profile_content': 'log_screen/include/profile/password.html',
+        'subtitle': 'Parola Değiştir',
     }
 
     return render(request, 'log_screen/profile.html', context)
@@ -750,7 +790,11 @@ def profile_password(request: HttpRequest) -> HttpResponse:
 @login_required
 def profile_password_forget(request: HttpRequest) -> HttpResponse:
     context = {
-        'profile_content': 'log_screen/include/profile/password_forget.html'
+        'profile_content': 'log_screen/include/profile/password_forget.html',
+        'subtitle': 'Parolamı Unuttum'
     }
     return render(request, 'log_screen/profile.html', context)
 
+
+def offline(request: HttpRequest) -> HttpResponse:
+    return render(request, 'log_screen/offline.html')

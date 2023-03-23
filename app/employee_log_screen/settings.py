@@ -195,5 +195,7 @@ PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'tr'
 PWA_APP_DEBUG_MODE = DEBUG
 
+PWA_SERVICE_WORKER_PATH = BASE_DIR / 'serviceworker.js'
+
 # Set the login URL.
-LOGIN_URL = '/login'
+LOGIN_URL = '/login/'

@@ -1,0 +1,28 @@
+{% extends 'log_screen/bases/main.html' %}
+{% load log_screen_extras %}
+{% load static %}
+
+{% block title %}
+    {% get_app_label %}
+
+    | İnternet Bağlantısı Koptu 😔 
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid my-5 text-center">
+        <div class="row justify-content-center mb-3">
+            <div class="col col-12 col-lg-4">
+                <img src="{% static 'svg/undraw_stars_re_6je7.svg' %}" class="img-fluid" style="max-width: 300px; height: auto;" alt="Astronot">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <h1 class="display-5 mb-3">İnternet Bağlantısı Koptu 😔</h1>
+                <a href="{% url 'index' %}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-rocket-takeoff-fill"></i>
+                    Tekrar Bağlanmayı Dene
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

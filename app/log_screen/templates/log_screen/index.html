@@ -127,9 +127,11 @@
                     <div class="container-fluid p-0">
                         <div class="row mb-3 px-1">
                             <div class="col col-12 col-sm-8 text-center text-sm-start">
-                                <p class="lead m-0">
-                                    <strong>{{ table_verbose_name }}</strong> düzenlemek için, <strong data-bs-toggle="tooltip" data-bs-title="Tablo üzerindeki verileri düzenlemek için en sağdaki tuşa basınız." class="text-nowrap"><i class="bi bi-pencil-square"></i> Düzenle</strong> tuşuna tıklayın.
-                                </p>
+                                {% if results %}
+                                    <p class="lead m-0">
+                                        <strong>{{ table_verbose_name }}</strong> düzenlemek için, <strong data-bs-toggle="tooltip" data-bs-title="Tablo üzerindeki verileri düzenlemek için en sağdaki tuşa basınız." class="text-nowrap"><i class="bi bi-pencil-square"></i> Düzenle</strong> tuşuna tıklayın.
+                                    </p>
+                                {% endif %}
                             </div>
                             <div class="col col-12 col-sm-4 text-center text-sm-end mt-3 mt-sm-0 d-grid d-sm-block">
                                 <a href="{% url 'add' model_name=table_name %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="{{ table_verbose_name }} ekleme sayfasını aç">
@@ -147,7 +149,7 @@
                                         {% include table_include %}
                                         <tfoot>
                                             <tr>
-                                                <td colspan="100%">Toplamda <strong>{{ results|length }}</strong> adet <strong>{{ table_verbose_name }}</strong> var.</td>
+                                                <td colspan="100%">Bu sayfada <strong>{{ results|length }}</strong> adet <strong>{{ table_verbose_name }}</strong> gösteriliyor.</td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -157,35 +159,27 @@
                             </div>
                         </div>
                         {% if results %}
-                            <div class="row">
-                                <div class="col col-12r">
-                                    <nav>
-                                        <ul class="pagination" data-bs-toggle="tooltip" data-bs-title="Ben henüz çalışmıyorum 😅" style="width: max-content;">
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">Önceki</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">1</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">4</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">5</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link disabled">Sonraki</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                            {% if paginations|length > 1 %}
+                                <div class="row">
+                                    <div class="col col-12">
+                                        <nav class="overflow-x-scroll">
+                                            <ul class="pagination" style="width: max-content;">
+                                                <li class="page-item">
+                                                    <a href="?pagination={{ previos_page }}" class="page-link{% if current_page == paginations.0 %} disabled{% endif %}">Önceki</a>
+                                                </li>
+                                                {% for pagination in paginations %}
+                                                    <li class="page-item">
+                                                        <a href="?pagination={{ pagination }}" class="page-link{% if current_page == pagination %} active{% endif %}">{{ pagination }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                                <li class="page-item">
+                                                    <a href="?pagination={{ next_page }}" class="page-link{% if current_page == paginations|last %} disabled{% endif %}">Sonraki</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% elif report_name %}
@@ -204,13 +198,13 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'reqort_output' report_name=model_name output_type='csv' %}">
+                                                <a class="dropdown-item" href="{% url 'report_output' report_name=model_name output_type='csv' %}">
                                                     <i class="bi bi-filetype-csv"></i>
                                                     CSV
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'reqort_output' report_name=model_name output_type='json' %}">
+                                                <a class="dropdown-item" href="{% url 'report_output' report_name=model_name output_type='json' %}">
                                                     <i class="bi bi-filetype-json"></i>
                                                     JSON
                                                 </a>
