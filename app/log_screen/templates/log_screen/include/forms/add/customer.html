@@ -1,10 +1,10 @@
 <!-- Customer name -->
 <div class="mb-3">
     <label for="customer-name-input" class="form-label">Müşteri Adı</label>
-    <input type="text" class="form-control" name="customer-name-input" id="customer-name-input" autocapitalize="words" minlength="3" aria-describedby="customer-name-help" value="{{ data.customer_name }}" required>
+    <input type="text" class="form-control" name="customer-name-input" id="customer-name-input" autocapitalize="words" minlength="3" maxlength="50" aria-describedby="customer-name-help" value="{{ data.customer_name }}" required>
 
     <div id="customer-name-help" class="form-text">
-        Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
+        Lütfen en az 3, en fazla 50 karakter uzunluğunda bir ad giriniz.
     </div>
 
     <div class="invalid-feedback">

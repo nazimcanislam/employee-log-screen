@@ -34,7 +34,11 @@
 
 <div class="mb-3">
     <label for="project-business-unit-input" class="form-label">Proje Ünitesi</label>
-    <input type="text" class="form-control" name="project-business-unit-input" id="project-business-unit-input" value="{{ data.project_business_unit }}" required>
+    <input type="text" class="form-control" name="project-business-unit-input" id="project-business-unit-input" maxlength="100" value="{{ data.project_business_unit }}" aria-describedby="project-business-unit-help" required>
+
+    <div id="project-business-unit-help" class="form-text">
+        En fazla 100 karakterden oluşan bir proje ünitesi giriniz.
+    </div>
 
     <div class="invalid-feedback">
         Lütfen proje ünitesini giriniz!
@@ -43,7 +47,11 @@
 
 <div class="mb-3">
     <label for="project-type-input" class="form-label">Proje Tipi</label>
-    <input type="text" class="form-control" name="project-type-input" id="project-type-input" value="{{ data.project_type }}" required>
+    <input type="text" class="form-control" name="project-type-input" id="project-type-input" value="{{ data.project_type }}" aria-describedby="project-type-input-help" required>
+
+    <div id="project-type-input-help" class="form-text">
+        En fazla 100 karakterden oluşan bir proje tipi giriniz.
+    </div>
 
     <div class="invalid-feedback">
         Lütfen proje tipini giriniz!
