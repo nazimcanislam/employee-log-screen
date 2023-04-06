@@ -124,20 +124,6 @@
                     {# Show user control buttons when user is authenticated #}
                     {% if request.user.is_authenticated %}
                         <div class="d-flex gap-1">
-                            <!--
-                            {# Show admin panel link when authenticated user is super user #}
-                            {% if request.user.is_superuser %}
-                                <a href="/admin/" class="btn btn-outline-light text-capitalize">
-                                    <i class="bi bi-person-lock"></i>
-                                    <span>Admin Paneli</span>
-                                </a>
-                            {% endif %}
-                            <a data-bs-toggle="modal" data-bs-target="#logout-modal" class="btn btn-outline-light text-capitalize">
-                                <i class="bi bi-box-arrow-left"></i>
-                                <span>Çıkış Yap</span>
-                            </a>
-                            -->
-
                             {# Show admin panel link when authenticated user is super user #}
                             <ul class="navbar-nav">
                                 {% if request.user.is_superuser %}
