@@ -1,0 +1,36 @@
+{% extends 'log_screen/bases/main.html' %}
+{% load log_screen_extras %}
+{% load static %}
+
+{% block title %}
+    {% get_app_label %} | Yardım
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col">
+                <div class="container p-0">
+                    <article class="row">
+                        <div class="col">
+                            <h1 class="display-1 text-center text-sm-start text-capitalize">Yardım (Hazır değil)</h1>                            </h1>
+                            <p class="lead">Bu sayfa, {% get_app_label %} uygulaması ile personellerinizi ve projelerini yönetebilmeniz konusunda size yardımcı olacak.</p>
+                        
+                            <h2 class="h2">İçindekiler</h2>
+                            <ul>
+                                <li>
+                                    <a href="#" class="link-primary">Başlangıç</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="link-primary">Tablolara veri ekleme</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

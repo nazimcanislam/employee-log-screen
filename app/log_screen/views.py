@@ -798,3 +798,7 @@ def profile_password_forget(request: HttpRequest) -> HttpResponse:
 
 def offline(request: HttpRequest) -> HttpResponse:
     return render(request, 'log_screen/offline.html')
+
+
+def help_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'log_screen/help.html')
