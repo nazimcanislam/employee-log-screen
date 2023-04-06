@@ -1,0 +1,29 @@
+{% extends 'log_screen/bases/main.html' %}
+{% load log_screen_extras %}
+{% load static %}
+
+{% block title %}
+    {% get_app_label %}
+
+    | Sunucu Çöktü 😱
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid my-5 text-center">
+        <div class="row justify-content-center mb-3">
+            <div class="col col-12 col-lg-4">
+                <img src="{% static 'svg/undraw_server_down_s-4-lk.svg' %}" class="img-fluid" style="max-width: 300px; height: auto;" alt="Astronot">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <h1 class="display-5 mb-3">Sunucu Çöktü 😱</h1>
+                <p class="lead">Bilinmeyen bir hatadan ötürü sunucu çöktü! Lütfen daha sonra tekrar deneyin.</p>
+                <a href="{% url 'index' %}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-rocket-takeoff-fill"></i>
+                    Tekrar Bağlanmayı Dene
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
