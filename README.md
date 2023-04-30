@@ -1,7 +1,7 @@
-<h1 style="text-align: center; display: flex; flex-direction: column; align-items: center; row-gap: 16px;">
-    <img src="app/log_screen/static/favicon_io/android-chrome-512x512.png" width="128">
-    <span>Employee Log Screen</span>
-</h1>
+<p align="center">
+    <img src="app/log_screen/static/favicon_io/android-chrome-512x512.png" height="128">
+    <h1 align="center">Employee Log Screen</h1>
+</p>
 
 [![Python - 3.11](https://img.shields.io/badge/Python-3.11-2ea44f)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/nazimcanislam/employee-log-screen/blob/main/LICENSE)
