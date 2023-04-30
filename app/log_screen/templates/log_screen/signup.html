@@ -20,7 +20,7 @@
                     <!-- Full name -->
                     <div class="mb-3">
                         <label for="fullname-input" class="form-label">Ad Soyad</label>
-                        <input type="text" class="form-control" name="fullname-input" id="fullname-input" minlength="3" aria-describedby="fullname-input" autocapitalize="words" required>
+                        <input type="text" class="form-control" name="fullname-input" id="fullname-input" minlength="3" aria-describedby="fullname-input" autocomplete="name" autocapitalize="words" required>
 
                         <div id="fullname-help" class="form-text">
                             Lütfen en az 3 karakter uzunluğunda bir ad giriniz.
@@ -34,7 +34,7 @@
                     <!-- Username -->
                     <div class="mb-3">
                         <label for="username-input" class="form-label">Kullanıcı Adı</label>
-                        <input type="text" class="form-control" name="username-input" id="username-input" minlength="5" aria-describedby="username-help" autocapitalize="off" required>
+                        <input type="text" class="form-control" name="username-input" id="username-input" minlength="5" aria-describedby="username-help" autocomplete="username" autocapitalize="off" required>
 
                         <div id="username-help" class="form-text">
                             Lütfen en az 5 karakter uzunluğunda bir kullanıcı adı giriniz.
@@ -48,7 +48,7 @@
                     <!-- E-Mail -->
                     <div class="mb-3">
                         <label for="email-input" class="form-label">E-Posta Adresi</label>
-                        <input type="email" class="form-control" name="email-input" id="email-input" required>
+                        <input type="email" class="form-control" name="email-input" id="email-input" autocomplete="email" required>
 
                         <div class="invalid-feedback">
                             Lütfen e-posta adresinizi eksiksiz giriniz!
@@ -58,7 +58,7 @@
                     <!-- Password -->
                     <div class="mb-3">
                         <label for="password-input" class="form-label">Parola</label>
-                        <input type="password" class="form-control" name="password-input" id="password-input" aria-describedby="password-help" minlength="8" required>
+                        <input type="password" class="form-control" name="password-input" id="password-input" aria-describedby="password-help" autocomplete="new-password" minlength="8" required>
 
                         <div id="password-help" class="form-text">
                             <ul>
@@ -76,7 +76,7 @@
                     <!-- Password again -->
                     <div class="mb-3">
                         <label for="password-again-input" class="form-label">Parola Tekrar</label>
-                        <input type="password" class="form-control" name="password-again-input" id="password-again-input" minlength="8" required>
+                        <input type="password" class="form-control" name="password-again-input" id="password-again-input" autocomplete="new-password" minlength="8" required>
 
                         <div class="invalid-feedback">
                             Lütfen parolanızı girdiğinizden emin olunuz!
