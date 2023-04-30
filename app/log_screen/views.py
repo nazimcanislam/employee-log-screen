@@ -308,7 +308,7 @@ def login(request: HttpRequest) -> HttpResponse:
         
         user = authenticate(username=username, password=password)
         if user:
-            messages.add_message(request, messages.SUCCESS, f'<span>Giriş yapma işlemi başarılı! Hoş geldiniz </span> <strong translate="no">{user.first_name} {user.last_name}</strong> 😃')
+            messages.add_message(request, messages.SUCCESS, f'<span>Giriş yapma işlemi başarılı! Hoş geldiniz </span> <strong translate="no">{user.first_name} {user.last_name}</strong>')
             django_user_login(request, user)
             return redirect('index')
         else:

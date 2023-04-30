@@ -40,15 +40,15 @@ def greeting(user: User) -> str:
 
     # Set a greeting based on time.
     if hour >= 5 and hour < 12:
-        text = f'<span>Günaydın</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Günaydın güneşi">☀️</span>'
+        text = f'<span>Günaydın</span> {name}'
     elif hour >= 12 and hour < 15:
-        text = f'<span>İyi Günler</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Havalı!">😎</span>'
+        text = f'<span>İyi Günler</span> {name}'
     elif hour >= 15 and hour < 21:
-        text = f'<span>İyi Akşamlar</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Batan Güneş">🌅</span>'
+        text = f'<span>İyi Akşamlar</span> {name}'
     elif (hour >= 21 and hour < 24) or (hour >= 0 and hour < 5):
-        text = f'<span>İyi Geceler</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Uykulu">🥱</span>'
+        text = f'<span>İyi Geceler</span> {name}'
     else:
-        text = f'<span>İyi Zamansal Yolculuklar</span> {name} <span data-bs-toggle="tooltip" data-bs-title="Şaşırmış">😶</span>'
+        text = f'<span>İyi Zamansal Yolculuklar</span> {name}'
     
     # Return the greeting value.
     return text
