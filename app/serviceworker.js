@@ -4,13 +4,15 @@ var staticCacheName = "django-pwa-v" + new Date().getTime();
 var filesToCache = [
     '/offline/',
     '/static/svg/undraw_stars_re_6je7.svg',
+    '/static/svg/undraw_page_not_found_re_e9o6.svg',
+    '/static/svg/undraw_server_down_s-4-lk.svg',
     '/static/favicon_io/android-chrome-512x512.png',
     '/static/favicon_io/android-chrome-192x192.png',
     '/static/favicon_io/android-chrome-32x32.png',
     '/static/favicon_io/android-chrome-16x16.png',
     '/static/favicon_io/apple-touch-icon.png',
     '/static/favicon_io/favicon.ico',
-    '/static/images/logo400x200.png'
+    '/static/images/logo400x200.png',
 ];
 
 // Cache on install
