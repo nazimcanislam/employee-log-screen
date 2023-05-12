@@ -517,8 +517,18 @@ def add_data_to_table(request: HttpRequest, model_name: str) -> HttpResponse:
         return redirect('index_show_table', table_name=model_name)
 
     if model_name == 'project':
-        context['customers'] = Customer.objects.filter(author=request.user).order_by('-id')
+        customers = Customer.objects.filter(author=request.user).order_by('-id')
         context['customer_meta'] = Customer._meta
+
+        lead_dates = {}
+        for customer in customers:
+            if not (customer.customer_lead_date in lead_dates.keys()):
+                lead_dates[customer.customer_lead_date] = [customer,]
+            else:
+                lead_dates[customer.customer_lead_date].append(customer)
+
+        context['lead_dates'] = sorted(lead_dates.items(), key=lambda x: x[0])
+
     elif model_name == 'employee':
         context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta
@@ -598,8 +608,17 @@ def edit_data(request: HttpRequest, model_name: str, _id: int) -> HttpResponse:
         return redirect('index_show_table', table_name=model_name)
 
     if model_name == 'project':
-        context['customers'] = Customer.objects.filter(author=request.user).order_by('-id')
+        customers = Customer.objects.filter(author=request.user).order_by('-id')
         context['customer_meta'] = Customer._meta
+
+        lead_dates = {}
+        for customer in customers:
+            if not (customer.customer_lead_date in lead_dates.keys()):
+                lead_dates[customer.customer_lead_date] = [customer,]
+            else:
+                lead_dates[customer.customer_lead_date].append(customer)
+
+        context['lead_dates'] = sorted(lead_dates.items(), key=lambda x: x[0])
     elif model_name == 'employee':
         context['projects'] = Project.objects.filter(author=request.user).order_by('-id')
         context['project_meta'] = Project._meta

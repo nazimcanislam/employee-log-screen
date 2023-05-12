@@ -4,8 +4,12 @@
     <label for="project-customer-input" class="form-label">Müşteri</label>
     <select class="form-select" name="project-customer-input" aria-label="Müşteri Seçin" id="project-customer-input" translate="no" required>
         <option value="">------</option>
-        {% for customer in customers %}
-            <option value="{{ customer_meta.model_name }}-{{ customer.id }}"{% if data.project_customer.id == customer.id %}selected{% endif %}>{{ customer }}</option>
+        {% for lead_date, customers in lead_dates %}
+            <optgroup label="{{ lead_date }}">
+                {% for customer in customers %}
+                    <option value="{{ customer_meta.model_name }}-{{ customer.id }}"{% if data.project_customer.id == customer.id %}selected{% endif %}>{{ customer }}</option>
+                {% endfor %}
+            </optgroup>
         {% endfor %}
     </select>
 
