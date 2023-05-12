@@ -37,8 +37,10 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-APP_VERSION_NUMBER = env('APP_VERSION_NUMBER')
 APP_LABEL = 'Personel Kayıt Ekranı'
+
+with open(file=BASE_DIR / '.version', mode='r', encoding='utf-8') as f:
+    APP_VERSION_NUMBER = f.read()
 
 
 # Application definition
@@ -93,15 +95,15 @@ WSGI_APPLICATION = 'employee_log_screen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
 
-        # "ENGINE": 'django.db.backends.postgresql',
-        # "NAME": env("POSTGRES_NAME"),
-        # "USER": env("POSTGRES_USER"),
-        # "PASSWORD": env("POSTGRES_PASSWORD"),
-        # "HOST": env("SQL_HOST"),
-        # "PORT": env("SQL_PORT"),
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": env("POSTGRES_NAME"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("SQL_HOST"),
+        "PORT": env("SQL_PORT"),
     }
 }
 
