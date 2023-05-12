@@ -23,11 +23,16 @@ User interface using Django to add staff and clients and associate projects.
 In order for the Django server to communicate with PostgreSql, it is necessary to write the necessary information against the fields in the `app/.env` file. If the file doesn't exist, create it.
 
 ```
-DB_NAME=example_db_name
-DB_USER=example_user_name
-DB_PASSWORD=verysecretpassword
-DB_HOST=127.0.0.1
-DB_PORT=5432
+DEBUG=<True or False>
+SECRET_KEY=verysecret
+ALLOWED_HOSTS=*
+
+POSTGRES_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+SQL_HOST=db
+SQL_PORT=5432
 ```
 
 ### Creating & Running Docker Images
@@ -36,7 +41,7 @@ We can create images for development and production.
 
 #### For Development
 
-This command crates and runs development images with `docker-compose.dev.yml` files data.
+This command creates and runs development images with `docker-compose.dev.yml` files data.
 
 ```bash
 docker-compose -f docker-compose.dev.yml up

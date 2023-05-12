@@ -23,11 +23,16 @@ Personel ve müşteri ekleyip, projeleri ilişkilendirmeye yarayan Django kullan
 Django sunucusunun PostgreSql ile iletişime geçebilmesi için gerekli olan bilgileri `app/.env` dosyasındaki alanların karşılarına yazmak gerekir. Eğer bu dosya yok ise oluşturun.
 
 ```
-DB_NAME=example_db_name
-DB_USER=example_user_name
-DB_PASSWORD=verysecretpassword
-DB_HOST=127.0.0.1
-DB_PORT=5432
+DEBUG=<True ya da False>
+SECRET_KEY=verysecret
+ALLOWED_HOSTS=*
+
+POSTGRES_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+SQL_HOST=db
+SQL_PORT=5432
 ```
 
 ### Docker İmajı Oluştur ve Çalıştır
